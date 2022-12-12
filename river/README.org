@@ -1,0 +1,53 @@
+#+title: A Literate River Configuration Using Python & Nix
+#+options: toc:2
+#+auto_tangle: t
+#+STARTUP: show2levels
+
+This project contains my [[https://github.com/riverwm/river][river]] configuration, a dynamic tiling Wayland compositor.
+The way I am doing this configuration would probably be considered +convoluted+ unconventional,
+as I am combining literate programming using Emac's org-mod, environment management using nix flakes, and Python.
+The latter is only possible because ~river~'s configuration is done interactively through the ~riverctl~ CLI.
+
+* Init Script
+:PROPERTIES:
+:header-args: :tangle init
+:END:
+#+begin_src python :shebang "#!/usr/bin/env python"
+def main():
+    pass
+
+
+if __name__ == "__main__":
+    main()
+#+end_src
+
+* River Utils
+:PROPERTIES:
+:header-args: :tangle river_utils.py
+:END:
+
+#+begin_src python
+import os
+
+def map(
+    modifiers: list[str],
+    key: str,
+    command: str,
+    mode: str = "normal",
+    release: bool = False,
+    repeat: bool = False,
+):
+    """
+    Run command when key is pressed while modifiers are held down and in the specified mode.
+
+    •   release: if True, activate on key release instead of key press
+    •   repeat: if True, activate repeatedly until key release; may not be used with -re‐
+        lease
+    •   mode: name of the mode for which to create the mapping
+    •   modifiers: one or more of the modifiers listed above, separated by a plus sign (+).
+    •   key: an XKB keysym name as described above
+    •   command: any command that may be run with riverctl
+    """
+    modifier_string = "+".join(modifiers)
+    os.system(f"riverctl map {mode} {modifier_string}")
+#+end_src

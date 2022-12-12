@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: i.i.d. distributed
+# key: iid
+# --
+\overset{\text{i.i.d.}}{\sim}

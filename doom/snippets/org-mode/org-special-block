@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: org-special-block
+# key: <sb
+# condition: t
+# --
+#+begin_${1:block-type}
+$2
+#+end_$1

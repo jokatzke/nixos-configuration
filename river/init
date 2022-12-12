@@ -1,0 +1,113 @@
+#!/usr/bin/env python
+import river_utils as riverctl
+import rivertile_utils as rivertile
+import os
+
+
+def main():
+    my_terminal = "alacritty"
+
+    keybinds = {
+        (("Super",), "Return"): f"spawn {my_terminal}",
+        (("Super",), "Q"): "close",
+        (("Super",), "Escape"): "exit",
+        (("Super",), "J"): "focus-view next",
+        (("Super",), "K"): "focus-view previous",
+        (("Super", "Shift"), "J"): "swap next",
+        (("Super", "Shift"), "K"): "swap previous",
+        (("Super",), "Period"): "focus-output next",
+        (("Super",), "Comma"): "focus-output previous",
+        (("Super", "Shift"), "Period"): "send-to-output next",
+        (("Super", "Shift"), "Comma"): "send-to-output previous",
+        (("Super",), "H"): "send-layout-cmd rivertile 'main-ratio -0.05'",
+        (("Super",), "L"): "send-layout-cmd rivertile 'main-ratio +0.05'",
+        (("Super", "Shift"), "H"): "send-layout-cmd rivertile 'main-count +1'",
+        (("Super", "Shift"), "L"): "send-layout-cmd rivertile 'main-count -1'",
+        (("Super", "Alt"), "H"): "move left 100",
+        (("Super", "Alt"), "J"): "move down 100",
+        (("Super", "Alt"), "K"): "move up 100",
+        (("Super", "Alt"), "L"): "move right 100",
+        (("Super", "Alt", "Control"), "H"): "snap left",
+        (("Super", "Alt", "Control"), "J"): "snap down",
+        (("Super", "Alt", "Control"), "K"): "snap up",
+        (("Super", "Alt", "Control"), "L"): "snap right",
+        (("Super", "Alt", "Shift"), "H"): "resize horizontal -100",
+        (("Super", "Alt", "Shift"), "J"): "resize vertical 100",
+        (("Super", "Alt", "Shift"), "K"): "resize vertical -100",
+        (("Super", "Alt", "Shift"), "L"): "resize horizontal 100",
+        (("Super",), "Space"): "toggle-float",
+        (("Super",), "F"): "toggle-fullscreen",
+        (("Super",), "Up"): "send-layout-cmd rivertile 'main-location top'",
+        (("Super",), "Right"): "send-layout-cmd rivertile 'main-location right'",
+        (("Super",), "Down"): "send-layout-cmd rivertile 'main-location bottom'",
+        (("Super",), "Left"): "send-layout-cmd rivertile 'main-location left'",
+        (("None",), "XF86AudioRaiseVolume"): "spawn 'pamixer -i 5'",
+        (("None",), "XF86AudioLowerVolume"): "spawn 'pamixer -d 5'",
+        (("None",), "XF86AudioMute"): "spawn 'pamixer --toggle-mute'",
+        (("None",), "XF86AudioMedia"): "spawn 'playerctl play-pause'",
+        (("None",), "XF86AudioPlay"): "spawn 'playerctl play-pause'",
+        (("None",), "XF86AudioPrev"): "spawn 'playerctl previous'",
+        (("None",), "XF86AudioNext"): "spawn 'playerctl next'",
+        (("None",), "XF86MonBrightnessUp"): "spawn 'light -A 5'",
+        (("None",), "XF86MonBrightnessDown"): "spawn 'light -U 5'",
+    }
+
+    # modifiers=["Super"], + Left Mouse Button to move views
+    riverctl.map_pointer(modifiers=["Super"], button="BTN_LEFT", action="move-view")
+
+    # modifiers=["Super"], + Right Mouse Button to resize views
+    riverctl.map_pointer(modifiers=["Super"], button="BTN_RIGHT", action="resize-view")
+
+    # modifiers=["Super"], + Middle Mouse Button to toggle float
+    riverctl.map_pointer(
+        modifiers=["Super"], button="BTN_MIDDLE", action="toggle-float"
+    )
+
+    tag_keys = ["A", "O", "E", "T", "N", "S"]
+    for index, key in enumerate(tag_keys):
+        index += 1
+
+        # modifiers=["Super", "[1-9]"], to focus tag [0-8]
+        riverctl.map(modifiers=["Super"], key=key, command=f"set-focused-tags {index}")
+
+        # modifiers=["Super", "Shift+[1-9]"], to tag focused view with tag [0-8]
+        riverctl.map(
+            modifiers=["Super", "Shift"], key=key, command=f"set-view-tags {index}"
+        )
+
+        # modifiers=["Super", "Ctrl+[1-9]"], to toggle focus of tag [0-8]
+        riverctl.map(
+            modifiers=["Super", "Control"],
+            key=key,
+            command=f"toggle-focused-tags {index}",
+        )
+
+        # modifiers=["Super", "Shift+Ctrl+[1-9]"], to toggle tag [0-8] of focused view
+        riverctl.map(
+            modifiers=["Super", "Shift+Control"],
+            key=key,
+            command=f"toggle-view-tags {index}",
+        )
+
+    # Set background and border color
+    riverctl.color("background", "0x002b36")
+    riverctl.color("border", "0x93a1a1", "focused")
+    riverctl.color("border", "0x586e75", "unfocused")
+
+    # Set keyboard repeat rate
+    riverctl.set_repeat(50, 300)
+
+    # bind all of the defined maps
+    for (modifiers, key), command in keybinds.items():
+        riverctl.map(modifiers=modifiers, key=key, command=command)
+
+    # Set the default layout generator to be rivertile and start it.
+    # River will send the process group of the init executable SIGTERM on exit.
+    riverctl.set_default_layout("rivertile")
+    rivertile.start()
+
+    os.system("alacritty")
+
+
+if __name__ == "__main__":
+    main()

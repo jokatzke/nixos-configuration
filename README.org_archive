@@ -1,0 +1,540 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /etc/nixos/README.org
+
+
+* Hyprland :noexport:
+:PROPERTIES:
+:header-args: :tangle no
+:ARCHIVE_TIME: 2022-12-01 Do 09:56
+:ARCHIVE_FILE: /etc/nixos/README.org
+:ARCHIVE_OLPATH: Home Manager/Configured Packages (Dotfiles)
+:ARCHIVE_CATEGORY: README
+:END:
+
+Enable Hyprland and basic configuration using home manager.
+#+begin_src nix :noweb yes
+wayland.windowManager.hyprland = {
+  enable = true;
+  systemdIntegration = true;
+  xwayland = {
+    enable = true;
+    hidpi = true;
+  };
+  extraConfig = ''
+    source=~/.config/hypr/extra_config.conf
+  '';
+  recommendedEnvironment = true;
+};
+#+end_src
+
+#+begin_src nix :noweb yes
+home.file."wrappedhl" = {
+  text = ''
+    <<hyprland_wrapper>>
+  '';
+  target = ".local/bin/wrappedhl";
+  executable = true;
+};
+#+end_src
+
+** Wrapper
+As is recommended in [[https://wiki.hyprland.org/Getting-Started/Quick-start/#wrapping-the-launcher-recommended][in the wiki]], this wrapper script is used to launch Hyprland, instead of the binary.
+It sets required environment variables.
+#+name: hyprland_wrapper
+#+begin_src sh :tangle no
+#!/bin/sh
+
+cd ~
+
+export _JAVA_AWT_WM_NONREPARENTING=1
+export XCURSOR_SIZE=24
+export LIBVA_DRIVER_NAME=nvidia
+export XDG_SESSION_TYPE=wayland
+export GBM_BACKEND=nvidia-drm
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export WLR_NO_HARDWARE_CURSORS=1
+
+exec Hyprland
+#+end_src
+
+** Configuration
+:PROPERTIES:
+:header-args: :tangle no :noweb-ref hyprland_config
+:END:
+
+*** Monitors
+
+Set custom names for the monitor devices, for ease-of-use
+#+begin_src conf
+$rightMonitor = DVI-D-1
+$leftMonitor = DP-1
+#+end_src
+
+Set the monitor configuration.
+- The first argument is the name of the monitor
+- The second argument is the display resolution and frame-rate
+- The third one is the position, from the top-left corner
+- The last is the scale (1 corresponds to no scaling)
+To check the current configuration of monitors, including their names, run ~hyprctl monitors~.
+#+begin_src conf
+monitor = $leftMonitor, 2560x1080@75, 0x0, 1
+monitor = $rightMonitor, 1920x1080@60, 2560x650, 1
+#+end_src
+See https://wiki.hyprland.org/Configuring/Monitors/ for more information.
+
+*** Applications
+
+**** Window Rules
+See https://wiki.hyprland.org/Configuring/Window-Rules/
+
+Make LibreWolf floating
+#+begin_src conf
+windowrule = float, ^(librewolf)$
+#+end_src
+
+**** Auto Start
+Using the ~exec-once~ keyword, applications can be run at startup.
+Additionally, ~exec~ can be used to run commands on every reload.
+
+#+begin_src conf
+# exec-once = waybar & hyprpaper & firefox
+#+end_src
+
+*** Mouse & Keyboard, Gestures
+#+begin_src conf
+input {
+    kb_layout = us
+    kb_variant = altgr-intl
+    kb_model =
+    kb_options =
+    kb_rules =
+
+    follow_mouse = 1
+
+    touchpad {
+        natural_scroll = no
+    }
+
+    sensitivity = 0 # between -1.0 and 1.0. 0 means no modification.
+}
+
+gestures {
+    # See https://wiki.hyprland.org/Configuring/Variables/ for more
+    workspace_swipe = off
+}
+#+end_src
+
+*** Layout
+#+begin_src conf
+general {
+    gaps_in = 5
+    gaps_out = 20
+    border_size = 2
+    col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
+    col.inactive_border = rgba(595959aa)
+
+    layout = dwindle
+}
+#+end_src
+
+Configure layouts.
+See also
+- https://wiki.hyprland.org/Configuring/Dwindle-Layout/
+- https://wiki.hyprland.org/Configuring/Master-Layout/
+#+begin_src conf
+dwindle {
+    pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+    preserve_split = yes # you probably want this
+}
+
+master {
+    new_is_master = false
+}
+#+end_src
+
+*** Decorations
+
+#+begin_src conf
+decoration {
+    rounding = 10
+    blur = yes
+    blur_size = 3
+    blur_passes = 1
+    blur_new_optimizations = on
+
+    drop_shadow = yes
+    shadow_range = 4
+    shadow_render_power = 3
+    col.shadow = rgba(1a1a1aee)
+}
+#+end_src
+
+*** Animations
+See https://wiki.hyprland.org/Configuring/Animations/
+
+#+begin_src conf
+animations {
+    enabled = yes
+
+    bezier = myBezier, 0.05, 0.9, 0.1, 1.05
+
+    animation = windows, 1, 7, myBezier
+    animation = windowsOut, 1, 7, default, popin 80%
+    animation = border, 1, 10, default
+    animation = fade, 1, 7, default
+    animation = workspaces, 1, 6, default
+}
+
+#+end_src
+
+*** Device-Specific Configuration
+See https://wiki.hyprland.org/Configuring/Keywords/#executing
+
+Example per-device config
+#+begin_src conf
+device:epic mouse V1 {
+    sensitivity = -0.5
+}
+#+end_src
+
+*** Keybinds
+See https://wiki.hyprland.org/Configuring/Binds/.
+You can find the names for the key symbols at
+https://github.com/xkbcommon/libxkbcommon/blob/master/include/xkbcommon/xkbcommon-keysyms.h.
+Note that the key symbol used in Hyprland is the name after =XKB_KEY_=, in all lowercase.
+
+Set the modifier key to super.
+#+begin_src conf
+$mainMod = SUPER
+#+end_src
+
+Set applications that are used multiple times
+#+begin_src conf
+$myTerm = alacritty
+#+end_src
+
+**** Window Management
+
+Essential window management commands, like ~killactive~
+#+begin_src conf
+bind = $mainMod, X, killactive,
+bind = $mainMod, V, togglefloating,
+bind = $mainMod, escape, exit,
+#+end_src
+
+Move focus using the vim direction keys
+#+begin_src conf
+bind = $mainMod, H, movefocus, l
+bind = $mainMod, L, movefocus, r
+bind = $mainMod, K, movefocus, u
+bind = $mainMod, J, movefocus, d
+#+end_src
+
+Move/resize windows by holding the left/right mouse-button and the modifier key.
+#+begin_src  conf
+bindm = $mainMod, mouse:272, movewindow
+bindm = $mainMod, mouse:273, resizewindow
+#+end_src
+
+**** Workspaces
+
+Define names for the workspaces.
+These will be used both as a keybind and as its name.
+#+begin_src conf
+$leftWorkspace1 = A
+$leftWorkspace2 = O
+$leftWorkspace3 = E
+$leftWorkspace4 = comma
+$leftWorkspace5 = period
+
+$rightWorkspace1 = T
+$rightWorkspace2 = N
+$rightWorkspace3 = S
+$rightWorkspace4 = C
+$rightWorkspace5 = R
+#+end_src
+
+Workspaces on the right monitor
+#+begin_src conf
+wsbind = name:$rightWorkspace1, $rightMonitor
+wsbind = name:$rightWorkspace2, $rightMonitor
+wsbind = name:$rightWorkspace3, $rightMonitor
+wsbind = name:$rightWorkspace4, $rightMonitor
+wsbind = name:$rightWorkspace5, $rightMonitor
+
+bind = $mainMod, $rightWorkspace1, workspace, name:$rightWorkspace1
+bind = $mainMod, $rightWorkspace2, workspace, name:$rightWorkspace2
+bind = $mainMod, $rightWorkspace3, workspace, name:$rightWorkspace3
+bind = $mainMod, $rightWorkspace4, workspace, name:$rightWorkspace4
+bind = $mainMod, $rightWorkspace5, workspace, name:$rightWorkspace5
+#+end_src
+
+Workspaces on the left monitor
+#+begin_src conf
+wsbind = name:$leftWorkspace1, $leftMonitor
+wsbind = name:$leftWorkspace2, $leftMonitor
+wsbind = name:$leftWorkspace3, $leftMonitor
+wsbind = name:$leftWorkspace4, $leftMonitor
+wsbind = name:$leftWorkspace5, $leftMonitor
+
+bind = $mainMod, $leftWorkspace1, workspace, name:$leftWorkspace1
+bind = $mainMod, $leftWorkspace2, workspace, name:$leftWorkspace2
+bind = $mainMod, $leftWorkspace3, workspace, name:$leftWorkspace3
+bind = $mainMod, $leftWorkspace4, workspace, name:$leftWorkspace4
+bind = $mainMod, $leftWorkspace5, workspace, name:$leftWorkspace5
+#+end_src
+
+Move active window to a workspace using the modifier key and shift
+#+begin_src conf
+bind = $mainMod SHIFT, $rightWorkspace1, movetoworkspace, $rightWorkspace1
+bind = $mainMod SHIFT, $rightWorkspace2, movetoworkspace, $rightWorkspace2
+bind = $mainMod SHIFT, $rightWorkspace3, movetoworkspace, $rightWorkspace3
+bind = $mainMod SHIFT, $rightWorkspace4, movetoworkspace, $rightWorkspace4
+bind = $mainMod SHIFT, $rightWorkspace5, movetoworkspace, $rightWorkspace5
+
+bind = $mainMod SHIFT, $leftWorkspace1, movetoworkspace, $leftWorkspace1
+bind = $mainMod SHIFT, $leftWorkspace2, movetoworkspace, $leftWorkspace2
+bind = $mainMod SHIFT, $leftWorkspace3, movetoworkspace, $leftWorkspace3
+bind = $mainMod SHIFT, $leftWorkspace4, movetoworkspace, $leftWorkspace4
+bind = $mainMod SHIFT, $leftWorkspace5, movetoworkspace, $leftWorkspace5
+#+end_src
+
+Scroll through existing workspaces with the main modifier and the scroll-wheel
+#+begin_src conf
+bind = $mainMod, mouse_down, workspace, e+1
+bind = $mainMod, mouse_up, workspace, e-1
+#+end_src
+
+**** Layout Specific
+
+***** Dwindle
+
+The ~pseudo~ command is used to pseudo-float a window, i.e. it is floating but still part of the dwindle layout.
+The ~togglesplit~ command toggles the direction of the current split.
+#+begin_src conf
+bind = $mainMod, P, pseudo, # dwindle
+bind = $mainMod, J, togglesplit, # dwindle
+#+end_src
+
+**** Applications
+Key binds to launch various applications.
+
+#+begin_src conf
+bind = $mainMod, return, exec, $myTerm
+bind = $mainMod, F, exec, dolphin
+bind = $mainMod, D, exec, wofi --show drun
+#+end_src
+
+
+* Waybar
+:PROPERTIES:
+:ARCHIVE_TIME: 2022-12-01 Do 10:25
+:ARCHIVE_FILE: /etc/nixos/README.org
+:ARCHIVE_OLPATH: Home Manager/Configured Packages (Dotfiles)
+:ARCHIVE_CATEGORY: README
+:END:
+
+#+begin_src nix :noweb yes
+programs.waybar = {
+  enable = true;
+  style = ''
+    <<waybar_style>>
+  '';
+  settings = {
+    mainBar = {
+      layer = "top";
+      mode = "dock";
+      exclusive = true;
+      passthrough = false;
+      position = "top";
+      spacing = 2;
+      fixed-center = true;
+      ipc = true;
+      margin-left = 5;
+      margin-right = 5;
+
+      modules-left = [ "wlr/workspaces"  ];
+      modules-center = [ "wlr/window" ];
+      modules-right = [ "backlight" "pulseaudio" "temperature" ];
+
+      "wlr/workspaces" = {
+        disable-scroll = true;
+        all-outputs = true;
+      };
+    };
+  };
+};
+#+end_src
+
+** Style
+#+name: waybar_style
+#+begin_src css :tangle no
+,* {
+    font-family: "Fira Code Nerd Font";
+    font-size: 14px;
+    /* color: #3A3B3C; */
+}
+
+window#waybar {
+  /* Transparent waybar. Make sure to comment out background-color: and border: */
+  background: rgba(0,0,0,0);
+  /* background-color: #1e1e2e; */
+  /* border: 2px solid #313244; */
+  transition-property: background-color;
+  transition-duration: .5s;
+}
+
+window#waybar.hidden {
+  opacity: 0.5;
+}
+
+#backlight,
+#battery,
+#clock,
+#cpu,
+#disk,
+#mode,
+#memory,
+#tray,
+#pulseaudio,
+#custom-menu,
+#custom-power,
+#custom-weather,
+#custom-updater,
+#custom-cycle_wall,
+#custom-vpn_check,
+#custom-uptime,
+#custom-cputemp,
+#network {
+	border-radius: 4px;
+	margin: 4px 0px;
+	padding: 0px 4px;
+  color: #3A3B3C;
+  border: 2px solid #3a3b3c;
+}
+
+#workspaces {
+	border-radius: 4px;
+	margin: 4px 0px;
+	padding: 0px 4px;
+  color: #3A3B3C;
+}
+
+#backlight {
+	background-color: #cba6f7;
+}
+
+#battery {
+	background-color: #f9e2af;
+}
+
+@keyframes blink {
+    to {
+        color: #000000;
+    }
+}
+
+#battery.critical:not(.charging) {
+	background-color: #f38ba8;
+    color: #f38ba8;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#clock {
+	background-color: #a6e3a1;
+}
+
+#cpu {
+	background-color: #89dceb;
+}
+
+#memory {
+	background-color: #eba0ac;
+}
+
+#disk {
+	background-color: #b4befe;
+}
+
+#tray {
+	background-color: #b4befe;
+}
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+#workspaces button {
+  background-color: #d9e0ee;
+  color: #3A3B3C;
+  border: 2px solid #3a3b3c;
+  margin-right: 2px;
+  border-radius: 4px;
+}
+
+#workspaces button.active {
+  background-color: rgb(249,226,175);
+  color: #3A3B3C;
+}
+
+#custom-menu {
+	background-color: #f5c2e7;
+}
+
+#custom-power {
+	background-color: #f38ba8;
+  margin-right: 4px;
+}
+
+#custom-updater {
+	background-color: #e6ed7b;
+}
+
+#custom-uptime {
+	background-color: #e6ed7b;
+}
+
+#custom-weather {
+	background-color: #cba6f7;
+}
+
+#custom-cycle_wall {
+	background-color: #89dceb;
+}
+
+#custom-vpn_check {
+	background-color: #a6e3a1;
+}
+#custom-cputemp {
+  background-color: #86b4fa;
+}
+
+#pulseaudio {
+	background-color: #fab387;
+}
+
+#pulseaudio.bluetooth {
+	background-color: #f5c2e7;
+}
+#pulseaudio.muted {
+	background-color: #313244;
+	color: #cdd6f4;
+}
+
+#network {
+	background-color: #89b4fa;
+}
+#network.disconnected,#network.disabled {
+	background-color: #313244;
+	color: #cdd6f4;
+}
+
+#+end_src

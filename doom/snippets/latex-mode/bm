@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: math bold
+# key: bm
+# --
+\bm{$1} $2

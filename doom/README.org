@@ -1,0 +1,1398 @@
+#+TITLE: Doom-Configuration
+#+auto_tangle: t
+
+* Modules
+:PROPERTIES:
+:header-args: :results none :tangle init.el
+:VISIBILITY: folded
+:END:
+Modules add functionality to doom-emacs and contain a set of packages,
+default configuration and commands, and organize them into a unit that
+can be enabled / disabled and configured as a whole.
+
+#+begin_src elisp
+(doom!
+#+end_src
+
+** Input
+Modules relating to keyboard-inputs (e.g. alternate layouts).
+
+#+begin_src elisp
+:input
+;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
+;;chinese
+;;japanese
+;;layout            ; auie,ctsrnm is the superior home row
+#+end_src
+
+** Completion
+Modules relating to completion frameworks and search engines.
+
+#+begin_src elisp
+:completion
+(company +childframe)           ; the ultimate code completion backend
+;;helm              ; the *other* search engine for love and life
+;;ido               ; the other *other* search engine...
+;;ivy               ; a search engine for love and life
+(vertico +icons)           ; the search engine of the future
+#+end_src
+
+** UI
+Aesthetic modules that affect the Emacs interface or user experience.
+
+#+begin_src elisp
+:ui
+;;deft              ; notational velocity for Emacs
+doom              ; what makes DOOM look the way it does
+doom-dashboard    ; a nifty splash screen for Emacs
+doom-quit         ; DOOM quit-message prompts when you quit Emacs
+;;(emoji +unicode)  ; 🙂
+hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+;;hydra
+;;indent-guides     ; highlighted indent columns
+(ligatures +extra +fira)         ; ligatures and symbols to make your code pretty again
+;;minimap           ; show a map of the code on the side
+modeline          ; snazzy, Atom-inspired modeline, plus API
+nav-flash         ; blink cursor line after big motions
+;;neotree           ; a project drawer, like NERDTree for vim
+ophints           ; highlight the region an operation acts on
+(popup +defaults)   ; tame sudden yet inevitable temporary windows
+;;tabs              ; a tab bar for Emacs
+;;treemacs          ; a project drawer, like neotree but cooler
+;;unicode           ; extended unicode support for various languages
+vc-gutter         ; vcs diff in the fringe
+vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+;;window-select     ; visually switch windows
+workspaces        ; tab emulation, persistence & separate workspaces
+zen               ; distraction-free coding or writing
+#+end_src
+
+** Editor
+Text-editing related modules.
+
+#+begin_src elisp
+:editor
+(evil +everywhere); come to the dark side, we have cookies
+;; file-templates    ; auto-snippets for empty files
+fold              ; (nigh) universal code folding
+(format +onsave)  ; automated prettiness
+;;god               ; run Emacs commands without modifier keys
+;;lispy             ; vim for lisp, for people who don't like vim
+;;multiple-cursors  ; editing in many places at once
+;;objed             ; text object editing for the innocent
+;;parinfer          ; turn lisp into python, sort of
+;;rotate-text       ; cycle region at point between text candidates
+snippets          ; my elves. They type so I don't have to
+word-wrap         ; soft wrapping with language-aware indent
+#+end_src
+
+** Emacs
+Modules that reconfigure or augment packages or features built into Emacs.
+
+#+begin_src elisp
+:emacs
+(dired +icons)             ; making dired pretty [functional]
+electric          ; smarter, keyword-based electric-indent
+ibuffer           ; interactive buffer management
+undo              ; persistent, smarter undo for your inevitable mistakes
+vc                ; version-control and Emacs, sitting in a tree
+#+end_src
+
+** Terminal
+Terminal emulators in Emacs.
+
+#+begin_src elisp
+:term
+;;eshell            ; the elisp shell that works everywhere
+;;shell             ; simple shell REPL for Emacs
+;;term              ; basic terminal emulator for Emacs
+;;vterm             ; the best terminal emulation in Emacs
+#+end_src
+
+** Checkers
+Spell / Syntax / Grammar checkers.
+
+#+begin_src elisp
+:checkers
+(syntax +childframe)              ; tasing you for every semicolon you forget
+(spell +flyspell +hunspell +everywhere) ; tasing you for misspelling mispelling
+grammar           ; tasing grammar mistake every you make
+#+end_src
+
+** Tools
+Small modules that give Emacs access to external tools & services.
+
+#+begin_src elisp
+:tools
+;;ansible
+biblio            ; Writes a PhD for you (citation needed)
+;;debugger          ; FIXME stepping through code, to help you add bugs
+direnv
+;;docker
+;;editorconfig      ; let someone else argue about tabs vs spaces
+ein               ; tame Jupyter notebooks with emacs
+(eval +overlay)     ; run code, run (also, repls)
+;;gist              ; interacting with github gists
+(lookup +dictionary +offline)              ; navigate your code and its documentation
+(lsp +peek)               ; M-x vscode
+magit             ; a git porcelain for Emacs
+;;make              ; run make tasks from Emacs
+;;pass              ; password manager for nerds
+pdf               ; pdf enhancements
+;;prodigy           ; FIXME managing external services & code builders
+rgb               ; creating color strings
+;;taskrunner        ; taskrunner for all your projects
+;;terraform         ; infrastructure as code
+;;tmux              ; an API for interacting with tmux
+tree-sitter       ; syntax and parsing, sitting in a tree...
+;;upload            ; map local to remote projects via ssh/ftp
+#+end_src
+
+** OS
+Modules to improve integration into your OS, system, or devices.
+
+#+begin_src elisp
+:os
+(:if IS-MAC macos)  ; improve compatibility with macOS
+;;tty               ; improve the terminal Emacs experience
+#+end_src
+
+** Languages
+Modules that bring support for a language or group of languages to Emacs.
+
+#+begin_src elisp
+:lang
+;;agda              ; types of types of types of types...
+;;beancount         ; mind the GAAP
+;;cc                ; C > C++ == 1
+;;clojure           ; java with a lisp
+;;common-lisp       ; if you've seen one lisp, you've seen them all
+;;coq               ; proofs-as-programs
+;;crystal           ; ruby at the speed of c
+;;csharp            ; unity, .NET, and mono shenanigans
+;;data              ; config/data formats
+;;(dart +flutter)   ; paint ui and not much else
+;;dhall
+;;elixir            ; erlang done right
+;;elm               ; care for a cup of TEA?
+emacs-lisp        ; drown in parentheses
+;;erlang            ; an elegant language for a more civilized age
+(ess +lsp)               ; emacs speaks statistics
+;;factor
+;;faust             ; dsp, but you get to keep your soul
+;;fortran           ; in FORTRAN, GOD is REAL (unless declared INTEGER)
+;;fsharp            ; ML stands for Microsoft's Language
+;;fstar             ; (dependent) types and (monadic) effects and Z3
+;;gdscript          ; the language you waited for
+;;(go +lsp)         ; the hipster dialect
+;;(haskell +lsp)    ; a language that's lazier than I am
+;;hy                ; readability of scheme w/ speed of python
+;;idris             ; a language you can depend on
+;;json              ; At least it ain't XML
+;;(java +lsp)       ; the poster child for carpal tunnel syndrome
+;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
+;;julia             ; a better, faster MATLAB
+;;kotlin            ; a better, slicker Java(Script)
+(latex +lsp +cdlatex +latexmk)             ; writing papers in Emacs has never been so fun
+;;lean              ; for folks with too much to prove
+ledger            ; be audit you can be
+;;lua               ; one-based indices? one-based indices
+markdown          ; writing docs for people to ignore
+;;nim               ; python + lisp at the speed of c
+(nix +tree-sitter)               ; I hereby declare "nix geht mehr!"
+;;ocaml             ; an objective camel
+(org +roam2 +noter +present +jupyter +pretty)
+                                        ; organize your plain life in plain text
+                                        ; +pretty for unicode symbols, e.g. for bullets
+                                        ; +roam2 for org-roam support
+                                        ; +noter for org-noter support
+                                        ; +present add reveal.js and beamer support
+                                        ; +jupyter adds jupyter integration for babel
+;;php               ; perl's insecure younger brother
+;;plantuml          ; diagrams for confusing people more
+;;purescript        ; javascript, but functional
+(python +lsp +pyright +tree-sitter)            ; beautiful is better than ugly
+;;qt                ; the 'cutest' gui framework ever
+;;racket            ; a DSL for DSLs
+;;raku              ; the artist formerly known as perl6
+;;rest              ; Emacs as a REST client
+;;rst               ; ReST in peace
+;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+;;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+;;scala             ; java, but good
+;;(scheme +guile)   ; a fully conniving family of lisps
+(sh +fish)                ; she sells {ba,z,fi}sh shells on the C xor
+;;sml
+;;solidity          ; do you need a blockchain? No.
+;;swift             ; who asked for emoji variables?
+;;terra             ; Earth and Moon in alignment for performance.
+;;web               ; the tubes
+;;yaml              ; JSON, but readable
+;;zig               ; C, but simpler
+#+end_src
+
+** Email Clients
+Ignore your Emails in Emacs!
+
+#+begin_src elisp
+:email
+(mu4e +org +gmail)
+;;notmuch
+;;(wanderlust +gmail)
+#+end_src
+
+** App
+Application modules are complex and opinionated modules that transform Emacs
+toward a specific purpose. They may have additional dependencies and *should be
+loaded last*, before =:config= modules.
+
+#+begin_src elisp
+:app
+;;calendar
+;;emms
+everywhere        ; *leave* Emacs!? You must be joking
+;;irc               ; how neckbeards socialize
+(rss +org)        ; emacs as an RSS reader
+;;twitter           ; twitter client https://twitter.com/vnought
+#+end_src
+
+** Config
+Modules that configure Emacs one way or another, or focus on making it easier
+for you to customize it yourself. It is best to load these last.
+
+#+begin_src elisp
+:config
+;; literate
+(default +bindings +smartparens)
+
+) ;; close the doom!-function
+#+end_src
+
+
+* User Configuration
+:PROPERTIES:
+:header-args: :results none :tangle config.el
+:END:
+Most private configuration should happen here.
+This section is loaded last.
+
+Here are some functions/macros that could help you configure Doom:
+- ~load!~ for loading external *.el files relative to this one
+- ~use-package!~ for configuring packages
+- ~after!~ for running code after a package has loaded
+- ~add-load-path!~ for adding directories to the ~load-path~, relative to
+  this file. Emacs searches the ~load-path~ when you load packages with
+  ~require~ or ~use-package~.
+- ~map!~ for binding new keys
+
+To get information about any of these functions/macros, move the cursor over
+the highlighted symbol at press ~K~ (non-evil users must press ~C-c c k~).
+This will open documentation for it, including demos of how they are used.
+
+You can also try ~gd~ (or ~C-c c d~) to jump to their definition and see how
+they are implemented.
+
+** General Configuration
+
+Some functionality uses this to identify you, e.g. GPG configuration, email
+clients, file templates and snippets.
+#+begin_src elisp
+(setq! user-full-name "Jonas Opitz"
+       user-mail-address "jonas.opitz@live.de")
+#+end_src
+
+Configure and load [[id:cd02fca7-85aa-41b6-8403-5d5eb733d840][zoxide]]
+#+begin_src elisp
+(use-package! zoxide
+  :init
+  (defun custom/dired-jump-with-zoxide (&optional other-window)
+    (interactive "P")
+    (zoxide-open-with nil (lambda (file) (dired-jump other-window file)) t))
+  (map! :leader
+        :desc "Find file using zoxide" "f z" #'zoxide-find-file
+        :desc "Open folder in dired using zoxide" "f Z" #'custom/dired-jump-with-zoxide
+        )
+  )
+#+end_src
+
+Some ligatures don't work properly with =Fire-Code=, so disable them
+#+begin_src elisp
+(plist-put! +ligatures-extra-symbols
+            :true          nil
+            :false         nil
+            :int           nil
+            :float         nil
+            :str           nil
+            :bool          nil
+            :list          nil
+            )
+#+end_src
+
+Disable =whitespace-mode= globally
+#+begin_src elisp
+(global-whitespace-mode -1)
+#+end_src
+
+** Theme
+
+Doom exposes five (optional) variables for controlling fonts in Doom.
+Here are the three important ones:
+- ~doom-font~
+- ~doom-variable-pitch-font~
+- ~doom-big-font~ -- used for ~doom-big-font-mode~; use this for
+  presentations or streaming.
+They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+font string. You generally only need these two:
+#+begin_src elisp
+(setq! doom-font                (font-spec :family "FiraCode Nerd Font" :size 15)
+       doom-variable-pitch-font (font-spec :family "Open Sans"           :size 16))
+#+end_src
+
+Use the =doom-one-light= theme.
+#+begin_src elisp
+(setq doom-theme 'doom-one-light)
+#+end_src
+
+This determines the style of line numbers in effect.
+The options are
+- ~nil~, for no line numbers
+- ~t~, for absolute line numbers
+- ~relative~, for relative line numbers
+#+begin_src elisp
+(setq! display-line-numbers-type 'relative)
+#+end_src
+
+Configure the ~doom-modeline~, e.g. to show word-count
+#+begin_src elisp
+(after! doom-modeline
+  (setq doom-modeline-enable-word-count t
+        doom-modeline-header-line nil
+        ;; doom-modeline-hud nil
+        doom-themes-padded-modeline t
+        doom-flatwhite-brighter-modeline nil
+        doom-plain-brighter-modeline nil
+        ))
+(add-hook! 'doom-modeline-mode-hook
+  (progn
+    (set-face-attribute 'header-line nil
+                        :background (face-background 'mode-line)
+                        :foreground (face-foreground 'mode-line))
+    ))
+#+end_src
+
+** Writing
+
+Set personal dictionary and configure ispell to use multiple languages.
+From https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html
+#+begin_src elisp
+(with-eval-after-load "ispell"
+  ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
+  ;; dictionary' even though multiple dictionaries will be configured
+  ;; in next line.
+  (setenv "LANG" "en_US.UTF-8")
+  (setq ispell-program-name "hunspell")
+  ;; Configure German and English.
+  (setq ispell-dictionary "de_DE,en_US")
+  ;; ispell-set-spellchecker-params has to be called
+  ;; before ispell-hunspell-add-multi-dic will work
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "de_DE,en_US")
+  ;; For saving words to the personal dictionary, don't infer it from
+  ;; the locale, otherwise it would save to ~/.hunspell_de_DE.
+  (setq ispell-personal-dictionary "~/.config/personal_dictionaries/hunspell_personal"))
+
+;; The personal dictionary file has to exist, otherwise hunspell will
+;; silently not use it.
+(unless (file-exists-p ispell-personal-dictionary)
+  (write-region "" nil ispell-personal-dictionary nil 0))
+#+end_src
+
+Use [[id:268d8c53-f6b2-475a-a289-afc7399c3079][langtool]] as HTTP client
+#+begin_src elisp
+(setq langtool-http-server-host "localhost"
+      langtool-http-server-port 8081
+      langtool-default-language nil
+      )
+#+end_src
+
+Use [[id:3780dd1f-073c-4440-a9eb-a771e31c0792][Vale]] for prose-linting
+From https://emacstil.com/til/2022/03/05/setting-up-vale-prose-linter-on-emacs/
+#+begin_src elisp
+(flycheck-define-checker vale
+  "A checker for prose"
+  :command ("vale" "--output" "line"
+            source)
+  :standard-input nil
+  :error-patterns
+  ((error line-start (file-name) ":" line ":" column ":" (id (one-or-more (not (any ":")))) ":" (message) line-end))
+  :modes (markdown-mode org-mode text-mode)
+  )
+(add-to-list 'flycheck-checkers 'vale 'append)
+#+end_src
+
+** General File Editing
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+*** Automatically Save Files
+Use [[id:7bd33ad4-9fc7-4a35-b44d-1ab51759ddb0][salv.el]] to automatically save files if they have been edited and are currently inactive.
+Currently, this is only enabled for [[id:a6b90489-9128-4815-aa5f-4bbf2dc1ada6][org-mode]] buffers.
+#+begin_src elisp
+(add-hook! 'org-mode-hook (salv-mode))
+#+end_src
+
+*** Auto-Completion
+
+Add key-binds for [[id:92961394-1c71-4e72-a017-4cf9f1078309][yas]]
+#+begin_src elisp
+(use-package! doom-snippets
+  :defer t
+  :init
+  (map! :leader
+        :desc "Add new snippet"
+        "i n" #'yas-new-snippet)
+  (map! :nvig "C-e" #'yas-expand)
+  )
+#+end_src
+
+Map [[id:af3a8b90-d995-42ce-b1ee-23f35c6ca0f2][company-mode's]] ~company-complete~ to ~C-SPC~
+#+begin_src elisp
+(map! :desc "company-complete" "C-SPC" #'+company-complete)
+#+end_src
+
+*** Navigation
+
+Map and configure [[id:c43634be-7d14-43b8-9a26-cb19813dcf51][avy]] related functions
+#+begin_src elisp
+(use-package! avy
+  :defer t
+  :init
+  (map! :nv "g s l" #'avy-goto-line)
+  (map! :nv "g s 1" #'avy-goto-word-1)
+  (map! :nv "g s 2" #'avy-goto-char-2)
+  (map! :nv "g s s" #'avy-goto-char-timer)
+  ;; set avy decision characters to dvorak home-row
+  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+  ;; search through all windows on all open frames
+  (setq avy-all-windows 'all-frames)
+  ;; set the timer for avy-goto-char-timer
+  (setq avy-timeout-seconds 0.4)
+  (setq avy-style 'at-full)
+  )
+#+end_src
+
+*** Misc. Key-Binds
+
+Set ~localleader~-key to ~,~, rather than ~SPC m~
+#+begin_src elisp
+(setq evil-snipe-override-evil-repeat-keys nil)
+(setq doom-localleader-key ",")
+(setq doom-localleader-alt-key "M-,")
+#+end_src
+
+Map ~expand-region~, which lets you select a select a region by semantic increments
+(e.g. current word -> sentence -> paragraph)
+#+begin_src elisp
+(map! :nvig "C-'" #'er/expand-region)
+#+end_src
+
+** Evil
+
+Stop evil-mode from also inserting another comment symbol when inserting a new line using [[kbd:][o]] or [[kbd:][O]].
+Note that using [[kbd:][ENT]] will still insert comment symbols.
+#+begin_src elisp
+(setq! +evil-want-o/O-to-continue-comments nil)
+#+end_src
+
+Disable auto-completion of parentheses in the evil command line.
+Parenthesis completion tends to be more annoying than actually helpful in this context.
+Following [[https://discourse.doomemacs.org/t/how-to-disable-auto-closing-parens-in-vim-evil-command-line/3316][this suggestion on the Discourse]].
+#+begin_src elisp
+(add-hook! 'evil-command-window-mode-hook #'turn-off-smartparens-mode)
+(add-hook! 'minibuffer-setup-hook #'turn-off-smartparens-mode)
+#+end_src
+
+** File Management (dired)
+
+#+begin_src elisp
+(evil-define-key 'normal dired-mode-map
+  ;; allow "normal" vim-movement to navigate the file system
+  (kbd "h") 'dired-up-directory
+  (kbd "l") 'dired-find-file
+  )
+#+end_src
+
+Trash files instead of deleting them outright
+#+begin_src elisp
+(setq! delete-by-moving-to-trash t
+       trash-directory "~/.local/share/Trash/files/")
+#+end_src
+
+Enable [[id:6a93ff40-b473-45cb-a49b-7ace813f5330][peep-dired]] and configure it
+#+begin_src elisp
+(use-package! peep-dired
+  :defer t
+  :custom
+  (peep-dired-cleanup-on-disable t)
+  (peep-dired-ignored-extensions '("mkv" "iso" "mp4"))
+  :init
+  (evil-define-key 'normal peep-dired-mode-map
+    ;; (kbd "<SPC>") 'peep-dired-scroll-page-down
+    ;; (kbd "C-<SPC>") 'peep-dired-scroll-page-up
+    (kbd "<backspace>") 'peep-dired-scroll-page-up
+    (kbd "j") 'peep-dired-next-file
+    (kbd "k") 'peep-dired-prev-file)
+  (add-hook 'peep-dired-hook 'evil-normalize-keymaps)
+  (map! :leader
+        (:prefix ("d" . "dired")
+         :desc "Open dired" "d" #'dired
+         :desc "Dired jump to current" "j" #'dired-jump
+         (:after dired
+          :map dired-mode-map
+          :desc "Toggle image previews" "p" #'peep-dired
+          :desc "Dired view file" "v" #'dired-view-file
+          )
+         )
+        )
+  )
+#+end_src
+
+** Languages
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+
+*** Stan :noexport:
+:PROPERTIES:
+:header-args: :results none :tangle no
+:END:
+Disabled ~stan~ mode
+
+#+begin_src elisp
+(use-package stan-mode
+  :defer t
+  :mode ("\\.stan\\'" . stan-mode)
+  :hook (stan-mode . stan-mode-setup)
+  :config
+  (setq stan-indentation-offset 2))
+#+end_src
+
+*** Ledger
+Configuration for [[id:080be9ce-24ea-4a89-a21f-aeb9a090faa4][Ledger]], a plain-text accounting tool.
+
+This sets the set of reports that can be run.
+#+BEGIN_SRC elisp
+(setq! ledger-reports
+       '(("total budget" "ledger --empty -f ~/ledger/main.ledger bal ^budget -X EUR")
+         ("total balance" "ledger --empty -f ~/ledger/main.ledger bal -X EUR")
+         ("bal" "%(binary) -f %(ledger-file) bal")
+         ("reg" "%(binary) -f %(ledger-file) reg")
+         ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
+         ("account" "%(binary) -f %(ledger-file) reg %(account)"))
+       )
+#+END_SRC
+
+** Bibliography
+
+Set the location of the bibliographies for [[id:053d4a0a-7ef0-47bb-8a47-dd5efeccc798][Org-Cite]]
+#+BEGIN_SRC elisp
+(setq! org-cite-global-bibliography
+       '(
+         "~/Books/Academics/library.bib"
+         )
+       )
+#+end_src
+
+Configure [[id:207bce48-fdb1-4a9f-a877-d005e615025f][citar]], adding the necessary paths, some symbols, and keybinds.
+See https://kristofferbalintona.me/posts/202206141852/
+#+begin_src elisp
+(use-package! citar
+  :defer t
+
+  :custom
+  ;; set the file paths
+  (citar-bibliography  '("~/Books/Academics/library.bib"))
+  (citar-library-paths '("~/Books/Academics/"))
+  (citar-notes-paths   '("~/org-roam/references"))
+
+  ;; define a template to be used when creating a new bibliography note
+  (citar-templates
+   '((main . "${author editor:30}   ${date year issued:4}    ${title:110}")
+     (suffix . "     ${=type=:20}    ${tags keywords keywords:*}")
+     (preview . "${author editor} (${year issued date}) ${title}, ${journal journaltitle publisher container-title collection-title}.\n")
+     (note . "Notes on ${author editor}, ${title}") ; For new notes
+     ))
+
+  ;; Configuring all-the-icons. From
+  ;; https://github.com/bdarcus/citar#rich-ui
+  (citar-symbols
+   `((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) .
+      ,(all-the-icons-faicon "file-o" :face 'kb/citar-icon-dim :v-adjust -0.1) )
+     (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) .
+           ,(all-the-icons-material "speaker_notes" :face 'kb/citar-icon-dim :v-adjust -0.3))
+     (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) .
+           ,(all-the-icons-octicon "link" :face 'kb/citar-icon-dim :v-adjust 0.01))))
+  (citar-symbol-separator "  ")
+
+  :init
+  ;; Run `citar-org-update-pre-suffix' after inserting a citation to immediately
+  ;; set its prefix and suffix
+  (advice-add 'org-cite-insert :after #'(lambda (args)
+                                          (save-excursion
+                                            (left-char) ; First move point inside citation
+                                            (citar-org-update-pre-suffix))))
+
+  ;; Here we define a face to dim non 'active' icons, but preserve alignment.
+  ;; Change to your own theme's background(s)
+  (defface kb/citar-icon-dim
+    '((((background dark)) :foreground "#212428")
+      (((background light)) :foreground "#f0f0f0"))
+    "Face for having icons' color be identical to the theme
+  background when \"not shown\".")
+  )
+#+end_src
+
+Override =citar-org-update-pre-suffix= to avoid having to manually insert separating spaces.
+See https://kristofferbalintona.me/posts/202206141852/
+#+begin_src elisp
+(defun kb/citar-org-update-pre-suffix ()
+  "Change the pre/suffix text of the reference at point.
+
+My version also adds a space in the suffix so I don't always have
+to manually add one myself."
+  (interactive)
+
+  ;; Enable `typo' typographic character cycling in minibuffer. Particularly
+  ;; useful in adding en- and em-dashes in citation suffixes (e.g. for page
+  ;; ranges)
+  (when (featurep 'typo)
+    (add-hook 'minibuffer-mode-hook 'typo-mode)) ; Enable dashes
+
+  (let* ((datum (org-element-context))
+         (datum-type (org-element-type datum))
+         (ref (if (eq datum-type 'citation-reference) datum
+                (error "Not on a citation reference")))
+         (key (org-element-property :key ref))
+         ;; TODO handle space delimiter elegantly.
+         (pre (read-string "Prefix text: " (org-element-property :prefix ref)))
+         (post (read-string "Suffix text: " (org-element-property :suffix ref))))
+
+    ;; Change post to automatically have one space prior to any user-inputted
+    ;; suffix
+    (setq post
+          (if (string= (replace-regexp-in-string "\s-*" "" post) "")
+              ""         ; If there is nothing of substance (e.g. an empty string)
+            (replace-regexp-in-string "^[\s-]*" " " post))) ; Only begin with one space
+
+    (setf (buffer-substring (org-element-property :begin ref)
+                            (org-element-property :end ref))
+          (org-element-interpret-data
+           `(citation-reference
+             (:key ,key :prefix ,pre :suffix ,post)))))
+
+  ;; Remove hook if it was added earlier
+  (remove-hook 'minibuffer-mode-hook 'typo-mode))
+(advice-add 'citar-org-update-pre-suffix :override #'kb/citar-org-update-pre-suffix)
+#+end_src
+
+** Reading PDF-Files
+
+Configuration of [[id:498b974f-1918-4a86-b971-b08dc2110af5][org-noter]]:
+- =org-noter-notes-search-path= to set the location of the notes files
+- =org-noter-notes-window-location= to ='other-frame= makes it open the org-note-file in another emacs-frame
+- =org-noter-always-create-frame= to =nil= stops it from opening the pdf on another frame
+- =org-noter-hide-other= to =nil= stops it from hiding the non-org-noter content of the org-note
+#+begin_src elisp
+(use-package! org-noter
+  :defer t
+  :after (:any org pdf-view)
+  :custom
+  (org-noter-notes-search-path '("~/org-roam/references"))
+  (org-noter-notes-window-location 'other-frame)
+  (org-noter-always-create-frame nil)
+  (org-noter-hide-other nil)
+  )
+#+end_src
+
+Configure [[id:498b974f-1918-4a86-b971-b08dc2110af5][org-noter]] and [[id:bf8fb783-83e1-43b8-bac0-e1d616459819][pdf-tools]] to add major-mode keys for ~pdf-view-mode~
+#+begin_src elisp
+(map! :map pdf-view-mode-map
+      :localleader
+      (:prefix ("e" . "Org noter")
+       :desc "Start session"          "e"     #'org-noter
+       :desc "Create skeleton"        "s"     #'org-noter-create-skeleton
+       :desc "Insert note"            "n"     #'org-noter-insert-note
+       :desc "Insert precise note"    "p"     #'org-noter-insert-precise-note
+       :desc "End Session"            "d"     #'org-noter-kill-session
+       )
+      (:prefix ("a" . "Annotations")
+       :desc "Markup" "a" #'pdf-annot-add-markup-annotation
+       :desc "Highlight" "h" #'pdf-annot-add-highlight-markup-annotation
+       :desc "Text" "t" #'pdf-annot-add-markup-annotation
+       :desc "Strike-through" "s" #'pdf-annot-add-strikeout-markup-annotation
+       :desc "Squiggly" "~" #'pdf-annot-add-squiggly-markup-annotation
+       :desc "Underline" "_" #'pdf-annot-add-underline-markup-annotation
+       :desc "Underline" "u" #'pdf-annot-add-underline-markup-annotation
+       :desc "Delete" "d" #'pdf-annot-delete
+       )
+      :desc "Occur" "/" #'pdf-occur
+      :desc "Outline" "o" #'pdf-outline
+      )
+#+end_src
+
+** Org-Mode
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+[[id:a6b90489-9128-4815-aa5f-4bbf2dc1ada6][Org-Mode]] related configuration.
+
+*** General
+
+If you use ~org~ and don't want your org files in the default location below,
+change ~org-directory~. It must be set before org loads!
+#+begin_src elisp
+(setq! org-directory "~/org/")
+#+end_src
+
+Do not show line numbers and line highlight in org-mode
+#+begin_src elisp
+(add-hook! 'org-mode-hook (display-line-numbers-mode 1))
+(add-hook! 'org-mode-hook (hl-line-mode -1))
+#+end_src
+
+Hide markup emphasis markers and show them when hovering over them, using [[id:cf02b3ea-2a80-46e9-b804-2b101c33ff67][org-appear]]
+#+begin_src elisp
+(setq! org-hide-emphasis-markers t)
+(use-package! org-appear
+  :defer t
+  :after org
+  :hook (org-mode . org-appear-mode)
+  :config
+  (setq org-appear-autolinks t
+        org-appear-autosubmarkers t
+        org-appear-autoentities t
+        org-appear-autokeywords t
+        org-appear-inside-latex t)
+  )
+#+end_src
+
+Use variable-pitch fonts in org-mode
+#+begin_src elisp
+(add-hook! 'org-mode-hook #'mixed-pitch-mode)
+(setq mixed-pitch-variable-pitch-cursor nil)
+#+end_src
+
+Preserve parent-indentations in source-code-blocks.
+#+begin_src elisp
+(after! org
+  (setq! org-src-preserve-indentation nil
+         org-edit-src-content-indentation 0))
+#+end_src
+- This fixes the following issue ::
+  The following source code is misaligned
+  #+begin_src python :tangle no
+print("Hello World")
+  #+end_src
+  This is what it should look like
+  #+begin_src python :tangle no
+  print("Hello World")
+  #+end_src
+
+*** Keymaps
+
+Additional [[id:a6b90489-9128-4815-aa5f-4bbf2dc1ada6][org-mode]] maps
+#+begin_src elisp
+(after! org
+  (general-auto-unbind-keys)
+  (map!
+   :map org-mode-map
+   :localleader
+   (:prefix "g"
+    ;; if you jump in org-mode using a link, go back to before jumping
+    :desc "Go back from link" "b" #'org-mark-ring-goto
+    :desc "Search org buffer" "s" #'org-occur
+    )
+   (:prefix "i"
+    :desc "Item" "i" #'org-insert-item
+    :desc "Task" "t" #'org-insert-todo-heading-respect-content
+    )
+   )
+  )
+#+end_src
+
+*** Headings
+
+Revert the change of the =TAB= key, making it recusively toggle the visibility of the entire tree
+#+begin_src elisp
+(after! evil-org
+  (remove-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h))
+#+end_src
+
+Only show headings when opening an org-file
+#+begin_src elisp
+(after! org
+  (setq! org-startup-folded 'content)
+  )
+#+end_src
+
+Set the styling of headings
+#+begin_src elisp
+(after! org
+  (custom-set-faces!
+    '(org-document-title :height 2.0)
+    '(org-level-1 :height 1.75 :weight bold :extend nil :inherit (outline-1))
+    '(org-level-2 :height 1.5  :extend nil :inherit (outline-2))
+    '(org-level-3 :height 1.25 :extend nil :inherit (outline-3))
+    '(org-level-4 :height 1.1  :extend nil :inherit (outline-4))
+    )
+  )
+#+end_src
+
+Do not use any bullet-symbols
+#+begin_src elisp
+(after! org-superstar
+  ;; list of bullets to use
+  (setq! org-superstar-headline-bullets-list '(32 32))
+  ;; do not cycle through bullets
+  (setq! org-superstar-cycle-headline-bullets nil)
+  ;; bullet to use for leading stars
+  (setq! org-superstar-leading-bullet " ")
+  ;; non-nil -> hide leading stars
+  (setq! org-superstar-remove-leading-stars nil)
+  )
+#+end_src
+
+Show an empty line after folded headings if their content is followed by two empty lines
+#+begin_src elisp
+(after! org
+  (setq! org-cycle-separator-lines 2)
+  )
+#+end_src
+
+Add ability to ignore certain headings, but not their content, when exporting org-files
+#+begin_src elisp
+(require 'ox-extra)
+(ox-extras-activate  '(ignore-headlines))
+#+end_src
+
+Use IDs, rather than heading names, when creating new links to headings.
+This will ensure that a link to a heading will always work as expected,
+even when e.g. changing the target's name or location (using ~org-refile~).
+Setting the variable to =create-if-interactive-and-no-custom-id=
+corresponds to an ID only being generated when storing a link interactively (e.g. through ~org-store-link~),
+if there is no ID or custom ID, the latter defined through the ~CUSTOM_ID~ property.
+See https://emacs.stackexchange.com/a/51761 for more detail.
+#+begin_src elisp
+(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+#+end_src
+
+*** Literate Programming
+
+Use [[id:9688ea4f-09e7-4b65-9879-da03500d9113][org-auto-tangle]] to automatically tangle (export code) on save.
+To activate this functionality for a file, add the following file property: ~#+auto_tangle: t~.
+#+begin_src elisp
+(use-package! org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode))
+#+end_src
+
+Add some keybinds to org-mode for literate programming using [[id:c9383453-3344-4697-bb48-7067b56bed29][org-babel]].
+- ~org-babel-tangle~ and ~org-babel-tangle-file~ allow the extraction of code blocks to stand-alone files (i.e. extracting to a Python script).
+- ~org-babel-execute-subtree~ executes all code blocks of a sub-tree sequentially, allowing easy execution of a series of tasks where only the end-result is of interest or importing modules and defining helper-functions.
+#+begin_src elisp
+(after! org
+  (map!
+   :map org-mode-map
+   :localleader
+   (:prefix ("v" . "Literate programming")
+    :desc "Tangle" "b" #'org-babel-tangle
+    :desc "Tangle file" "f" #'org-babel-tangle-file
+    :desc "Execute subtree" "s" #'org-babel-execute-subtree
+    )
+   )
+  )
+#+end_src
+
+*** Org-Roam
+
+Set the directory of the org-roam notes
+#+BEGIN_SRC elisp
+(setq! org-roam-directory (file-truename "~/org-roam"))
+#+end_src
+
+Automatically synchronize the org-roam database
+#+BEGIN_SRC elisp
+(org-roam-db-autosync-mode)
+#+end_src
+
+All of the templates to use
+#+BEGIN_SRC elisp
+(setq! org-roam-capture-templates
+       '(
+         ;; default notes
+         ("d" "default" plain
+          "%?"
+          :if-new (file+head
+                   "default/${slug}.org" ;; file-name
+                   "#+title: ${title}\n#+filetags: Knowledge\n\n" ;; meta-data
+                   )
+          :unnarrowed t
+          )
+         ;; template for functionality-related notes. saved in its own subdirectory
+         ("f" "functionality" plain
+          (file "~/org-roam/functionality/templates/functionality_template.org")
+          :if-new (file+head
+                   "functionality/${slug}.org" ;; file-name
+                   "#+title: ${title}\n#+filetags: Functionality\n\n" ;; meta-data
+                   )
+          :unnarrowed t
+          )
+         ))
+#+end_src
+
+When browsing nodes, show heading-nodes as a hierarchy
+#+BEGIN_SRC elisp
+(cl-defmethod org-roam-node-hierarchy ((node org-roam-node))
+  (let ((level (org-roam-node-level node)))
+    (concat
+     (when (> level 0) (concat (org-roam-node-file-title node) " > "))
+     (when (> level 1) (concat (string-join (org-roam-node-olp node) " > ") " > "))
+     (org-roam-node-title node))))
+(setq! org-roam-node-display-template "${hierarchy:*} ${tags:20}")
+#+end_src
+
+Use [[id:41d896e4-12f0-46e0-9f19-96373229f371][org-roam-ui]] for a nicer visualization of nodes
+#+begin_src elisp
+(use-package! org-roam-ui
+  :after org-roam
+  :init
+  (map! :map doom-leader-notes-map
+        :desc "Show Graph" "r g" #'org-roam-ui-mode)
+  )
+#+end_src
+
+*** LaTeX in Org-Mode
+
+Don't use [[id:2c5e7071-01a7-41e1-87a7-a66c074b9d80][solaire-mode]], since it causes LaTeX-previews to look out of place
+#+begin_src elisp
+(solaire-global-mode -1)
+#+end_src
+
+Define custom ~org-latex-classes~ to use, e.g. for notes, thesis, etc.
+#+begin_src elisp
+(with-eval-after-load 'ox-latex
+  (add-to-list
+   'org-latex-classes
+   '("thesis" ;; Master's Thesis class
+     "\\documentclass{thesis}"
+     ("\\chapter{%s}" . "\\chapter*{%s}")
+     ("\\section{%s}" . "\\section*{%s}")
+     ("\\subsection{%s}" . "\\subsection*{%s}")
+     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+     )
+   )
+  )
+
+#+end_src
+
+Add some additional LaTeX packages to use in previews
+#+begin_src elisp
+(setq! org-latex-packages-alist '(("" "bm" t)
+                                  ("" "mathtools" t)
+                                  ))
+#+end_src
+
+Use CDLaTeX for easier writing of LaTeX
+#+begin_src elisp
+(add-hook! 'org-mode-hook #'turn-on-org-cdlatex)
+#+end_src
+
+Use org-fragtog-mode to automatically preview LaTeX-segments after leaving them
+#+begin_src elisp
+(use-package! org-fragtog
+  :defer t
+  :after org
+  :hook (org-mode . org-fragtog-mode)
+  )
+#+end_src
+
+Automatically preview LaTeX-segments on file load
+#+begin_src elisp
+(setq! org-startup-with-latex-preview t)
+#+end_src
+
+Render LaTeX-previews to vector-images, rather than normal ones
+#+begin_src elisp
+(setq! org-preview-latex-default-process 'dvisvgm)
+#+end_src
+
+Use lualatex rather than pdflatex
+#+begin_src elisp
+(setq! org-latex-compiler "lualatex")
+#+end_src
+
+Allow for org-export bind keywords.
+This is necessary to change the default width of images when exporting to LaTeX from org files.
+https://emacs.stackexchange.com/questions/38689/org-images-in-latex-export-set-default-width/60664#60664
+#+begin_src elisp
+(setq org-export-allow-bind-keywords t)
+#+end_src
+
+*** Exports
+
+Do not allow exporting documents with broken links.
+#+begin_src elisp
+(setq custom/org-export-with-broken-links nil)
+(setq org-export-with-broken-links custom/org-export-with-broken-links)
+#+end_src
+
+Define a custom function that exports all level 1 headings in an org file to separate pdf files.
+From http://emacs.stackexchange.com/questions/2259/how-to-export-top-level-headings-of-org-mode-buffer-to-separate-files.
+Also allow exporting with broken links.
+#+begin_src elisp
+;; export headlines to separate files
+;;
+(defun custom/org-export-headlines-to-pdf ()
+  "Export all subtrees that are *not* tagged with :noexport: to
+separate files.
+
+Subtrees that do not have the :EXPORT_FILE_NAME: property set
+are exported to a filename derived from the headline text."
+  (interactive)
+  (save-buffer)
+
+  ;; temporarily export with broken links
+  (setq org-export-with-broken-links t)
+
+  (let ((modifiedp (buffer-modified-p)))
+    (save-excursion
+      (goto-char (point-min))
+      (goto-char (re-search-forward "^*"))
+      (set-mark (line-beginning-position))
+      (goto-char (point-max))
+      (org-map-entries
+       (lambda ()
+         (let ((export-file (org-entry-get (point) "EXPORT_FILE_NAME")))
+           (unless export-file
+             (org-set-property
+              "EXPORT_FILE_NAME"
+              (replace-regexp-in-string " " "_" (nth 4 (org-heading-components)))))
+           (deactivate-mark)
+           (org-latex-export-to-pdf nil t)
+           (unless export-file (org-delete-property "EXPORT_FILE_NAME"))
+           (set-buffer-modified-p modifiedp)))
+       "-noexport" 'region-start-level)))
+
+  ;; restore org-export broken links behavior
+  (setq org-export-with-broken-links custom/org-export-with-broken-links)
+  )
+#+end_src
+
+*** Getting Things Done
+
+Define the locations of the files relating to GTD
+#+begin_src elisp
+(defconst my-gtd-inbox-file "~/gtd/inbox.org")
+(defconst my-gtd-main-file "~/gtd/gtd.org")
+(defconst my-gtd-someday-file "~/gtd/someday.org")
+(defconst my-gtd-tickler-file "~/gtd/tickler.org")
+#+end_src
+
+Set up org-capture-templates to add entries to the inbox
+#+begin_src elisp
+(setq! org-capture-templates '(("t" "Todo [inbox]" entry
+                                (file+headline my-gtd-inbox-file "Tasks")
+                                "* TODO %i%?")
+                               ("i" "Information [inbox]" entry
+                                (file+headline my-gtd-inbox-file "Information")
+                                "* %i%?")
+                               ))
+#+end_src
+
+Set org-refile targets to the GTD files, for easy movement of projects
+#+begin_src elisp
+(setq! org-refile-targets '((my-gtd-main-file :maxlevel . 3)
+                            (my-gtd-someday-file :maxlevel . 3)
+                            (my-gtd-tickler-file :maxlevel . 2)))
+#+end_src
+
+Track the GTD files in org-agenda
+#+begin_src elisp
+(setq! org-agenda-files '("~/gtd/inbox.org"
+                          "~/gtd/gtd.org"
+                          "~/gtd/tickler.org"
+                          ))
+#+end_src
+
+Define custom org-agenda commands to show the relevant tasks for a certain context
+#+begin_src elisp
+(setq! org-agenda-custom-commands
+      '(("w" "At Work" tags-todo "@work"
+         ((org-agenda-overriding-header "Work")
+          (org-agenda-skip-function #'my-org-agenda-skip-all-siblings-but-first)))
+        ("p" "At the PC" tags-todo "@pc"
+         ((org-agenda-overriding-header "PC")
+          (org-agenda-skip-function #'my-org-agenda-skip-all-siblings-but-first)))
+        ("h" "At Home" tags-todo "@home"
+         ((org-agenda-overriding-header "Home")
+          (org-agenda-skip-function #'my-org-agenda-skip-all-siblings-but-first)))
+        ("t" "Tinkering" tags-todo "@tinkering"
+         ((org-agenda-overriding-header "Tinkering")
+          (org-agenda-skip-function #'my-org-agenda-skip-all-siblings-but-first)))
+        ))
+
+(defun my-org-agenda-skip-all-siblings-but-first ()
+  "Skip all but the first non-done entry."
+  (let (should-skip-entry)
+    (unless (org-current-is-todo)
+      (setq! should-skip-entry t))
+    (save-excursion
+      (while (and (not should-skip-entry) (org-goto-sibling t))
+        (when (org-current-is-todo)
+          (setq! should-skip-entry t))))
+    (when should-skip-entry
+      (or (outline-next-heading)
+          (goto-char (point-max))))))
+
+(defun org-current-is-todo ()
+  (string= "TODO" (org-get-todo-state)))
+#+end_src
+
+*** Flashcards / Spaced Repetition
+
+While there are multiple solutions for implementing spaced repetition inside of org-mode, I am choosing to go with [[id:0be292d4-0e6b-4c65-83b4-383f08710b73][org-fc]],
+as it seems to be the most well maintained and feature-rich solution.
+#+begin_src elisp
+(use-package org-fc
+  :after org
+  :custom
+  (org-fc-directories '("~/org-roam/"))
+  ;; symmetrical fuzzy interval, larger than the default
+  (org-fc-algo-sm2-fuzz-max 1.2)
+  (org-fc-algo-sm2-fuzz-min 0.8333)
+  ;; custom intervals for new cards
+  (org-fc-algo-sm2-intervals '(0.0 0.5 3.0 7.0))
+  :config
+  (require 'org-fc-keymap-hint)
+  :init
+  ;; set keys that were overridden by evil-mode
+  ;; keys while viewing a prompt
+  (evil-define-minor-mode-key 'normal 'org-fc-review-flip-mode
+    (kbd "RET") 'org-fc-review-flip
+    (kbd "n") 'org-fc-review-flip
+    (kbd "p") 'org-fc-review-edit
+    (kbd "s") 'org-fc-review-suspend-card
+    (kbd "q") 'org-fc-review-quit
+    )
+  ;; keys while evaluating the result
+  (evil-define-minor-mode-key 'normal 'org-fc-review-rate-mode
+    (kbd "a") 'org-fc-review-rate-again
+    (kbd "h") 'org-fc-review-rate-hard
+    (kbd "g") 'org-fc-review-rate-good
+    (kbd "e") 'org-fc-review-rate-easy
+    (kbd "s") 'org-fc-review-suspend-card
+    (kbd "q") 'org-fc-review-quit
+    )
+  ;; keys while in the dashboard
+  (evil-define-key 'normal org-fc-dashboard-mode-map
+    (kbd "q") 'kill-current-buffer
+    (kbd "r") 'org-fc-dashboard-review
+    )
+
+  ;; general keys
+  (map! :leader
+        (:prefix "o"
+         :desc "Flashcards" "v" #'org-fc-dashboard
+         )
+        )
+  )
+#+end_src
+
+** Emacs Calc
+Bind keys to open [[id:68f3141d-a5ad-4be3-99aa-366d4044be6a][emacs-calc]]
+#+begin_src elisp
+(map!
+ :leader
+ (:prefix "o"
+  :desc "Calc" "c" #'calc
+  :desc "Calc in whole buffer" "C" #'full-calc
+  ))
+#+end_src
+
+** Email
+Configure Email accounts and locations
+#+begin_src elisp
+(set-email-account!
+ "gmail.com"
+ '((mu4e-sent-folder       . "/Gmail/[Google Mail]/Sent Mail")
+   (mu4e-drafts-folder     . "/Gmail/[Google Mail]/Drafts")
+   (mu4e-trash-folder      . "/Gmail/[Google Mail]/Trash")
+   (mu4e-refile-folder     . "/Gmail/[Google Mail]/All Mail")
+   )
+ nil
+ )
+(set-email-account!
+ "outlook"
+ '((mu4e-sent-folder       . "/Outlook/Sent")
+   (mu4e-drafts-folder     . "/Outlook/Drafts")
+   (mu4e-trash-folder      . "/Outlook/Deleted")
+   (mu4e-refile-folder     . "/Outlook/Inbox")
+   )
+ t
+ )
+#+end_src
+
+Update ~mu4e~ automatically, in the background.
+An icon displaying new Emails will appear in the doom modeline, if relevant.
+#+begin_src elisp
+(use-package! mu4e
+  :config
+  (setq! mu4e-update-interval 300)
+)
+#+end_src
+
+** RSS
+While most RSS feed capabilities, using [[id:0f19ffc8-ac2b-4a5a-84c2-7ef9aa6495ef][elfeed]], are already configured through the =rss= module,
+we adjust some settings here.
+
+Automatically update ~elfeed~ when opening it.
+#+begin_src elisp
+(add-hook 'elfeed-search-mode-hook #'elfeed-update)
+#+end_src
+
+Create a key bind for elfeed
+#+begin_src elisp
+(map! :leader
+      (:desc "RSS Feed" "o f" #'elfeed))
+#+end_src
+
+
+* Packages
+:PROPERTIES:
+:header-args: :results none :tangle packages.el
+:VISIBILITY: folded
+:END:
+This is the usage of additional packages is declared.
+In order to use a package, it must first be added here.
+
+Use [[id:14940d40-8af3-4983-832b-4cd162b4e0c3][org-fragtog]] to immediately render LaTeX-fragments in [[id:a6b90489-9128-4815-aa5f-4bbf2dc1ada6][org-mode]]
+#+begin_src elisp
+(package! org-fragtog)
+#+end_src
+
+#+begin_src elisp
+(package! zoxide)
+#+end_src
+
+Use [[id:cf02b3ea-2a80-46e9-b804-2b101c33ff67][org-appear]] to reveal emphasis markes when moving the curser over them
+#+begin_src elisp
+(package! org-appear
+  :recipe (:host github
+           :repo "awth13/org-appear"))
+#+end_src
+
+Use [[id:41d896e4-12f0-46e0-9f19-96373229f371][org-roam-ui]] and unpin [[id:795e639f-cb14-4b5d-a475-ae29ffe67bdc][org-roam]], as is suggested in the documentation for org-roam-ui
+#+begin_src elisp
+(unpin! org-roam)
+(package! org-roam-ui)
+#+end_src
+
+[[id:0c4ec7f0-ca67-4e9f-88cd-0b897aa0fbd4][circadian.el]]
+#+begin_src elisp
+(package! circadian)
+#+end_src
+
+[[id:9b837bb7-5bdd-475d-96cf-db5c69439caa][stan]]-mode
+#+begin_src elisp
+(package! stan-mode)
+#+end_src
+
+[[id:9688ea4f-09e7-4b65-9879-da03500d9113][org-auto-tangle]]
+#+begin_src elisp
+(package! org-auto-tangle
+  :recipe (:host github :repo "yilkalargaw/org-auto-tangle"))
+#+end_src
+
+[[id:7bd33ad4-9fc7-4a35-b44d-1ab51759ddb0][salv.el]]
+#+begin_src elisp
+(package! salv
+  :recipe (:host github :repo "alphapapa/salv.el"))
+#+end_src
+
+[[id:6a93ff40-b473-45cb-a49b-7ace813f5330][peep-dired]]
+#+begin_src emacs-lisp
+(package! peep-dired)
+#+end_src
+
+[[id:0be292d4-0e6b-4c65-83b4-383f08710b73][org-fc]]
+#+begin_src elisp
+(package! org-fc
+  :recipe (:host github :repo "l3kn/org-fc" :files (:defaults "awk" "demo.org")))
+#+end_src
+
+** Notes
+:PROPERTIES:
+:header-args: :results none :tangle no
+:END:
+To install a package with Doom you must declare them here and run 'doom sync'
+on the command line, then restart Emacs for the changes to take effect -- or
+use 'M-x doom/reload'.
+
+To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
+#+begin_src elisp
+(package! some-package)
+#+end_src
+
+To install a package directly from a remote git repo, you must specify a
+`:recipe'. You'll find documentation on what `:recipe' accepts here:
+https://github.com/raxod502/straight.el#the-recipe-format
+#+begin_src elisp
+(package! another-package
+  :recipe (:host github :repo "username/repo"))
+#+end_src
+
+If the package you are trying to install does not contain a PACKAGENAME.el
+file, or is located in a subdirectory of the repo, you'll need to specify
+`:files' in the `:recipe':
+#+begin_src elisp
+(package! this-package
+  :recipe (:host github :repo "username/repo"
+           :files ("some-file.el" "src/lisp/*.el")))
+#+end_src
+
+If you'd like to disable a package included with Doom, you can do so here
+with the `:disable' property:
+#+begin_src elisp
+(package! builtin-package :disable t)
+#+end_src
+
+You can override the recipe of a built in package without having to specify
+all the properties for `:recipe'. These will inherit the rest of its recipe
+from Doom or MELPA/ELPA/Emacsmirror:
+#+begin_src elisp
+(package! builtin-package :recipe (:nonrecursive t))
+(package! builtin-package-2 :recipe (:repo "myfork/package"))
+#+end_src
+
+Specify a `:branch' to install a package from a particular branch or tag.
+This is required for some packages whose default branch isn't 'master' (which
+our package manager can't deal with; see raxod502/straight.el#279)
+#+begin_src elisp
+(package! builtin-package :recipe (:branch "develop"))
+#+end_src
+
+Use `:pin' to specify a particular commit to install.
+#+begin_src elisp
+(package! builtin-package :pin "1a2b3c4d5e")
+#+end_src
+
+Doom's packages are pinned to a specific commit and updated from release to
+release. The `unpin!' macro allows you to unpin single packages...
+(unpin! pinned-package)
+...or multiple packages
+(unpin! pinned-package another-pinned-package)
+...Or *all* packages (NOT RECOMMENDED; will likely break things)
+(unpin! t)

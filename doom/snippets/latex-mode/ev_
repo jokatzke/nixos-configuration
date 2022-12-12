@@ -1,0 +1,4 @@
+# name: Expected Value of ... w.r.t. ...
+# key: ev_
+# --
+\mathbb{E}_{$1}\left[ $2 \right]
