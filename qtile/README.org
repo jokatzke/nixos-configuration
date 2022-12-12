@@ -44,7 +44,7 @@ from typing import List  # noqa: F401from typing import List  # noqa: F401
 #+END_SRC
 
 * Variables
-Just some variables I am setting to make my life easier.
+Define common applications and folders as variables.
 
 #+BEGIN_SRC python
 mod = "mod4"               # Sets mod key to SUPER/WINDOWS
