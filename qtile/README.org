@@ -21,7 +21,6 @@
 - [[#default-widget-settings][Default Widget Settings]]
 - [[#widgets][Widgets]]
 - [[#screens][Screens]]
-- [[#some-important-functions][Some Important Functions]]
 - [[#drag-floating-windows][Drag floating windows]]
 - [[#floating-windows][Floating windows]]
 - [[#startup-applications][Startup applications]]
@@ -48,7 +47,7 @@ from typing import List  # noqa: F401from typing import List  # noqa: F401
 Just some variables I am setting to make my life easier.
 
 #+BEGIN_SRC python
-mod = "mod4"              # Sets mod key to SUPER/WINDOWS
+mod = "mod4"               # Sets mod key to SUPER/WINDOWS
 my_term = "alacritty"      # My terminal of choice
 my_browser = "firefox"     # My browser of choice
 home = os.path.expanduser('~')
@@ -59,7 +58,7 @@ In Qtile, layouts define how exactly a stack of windows should appear on the scr
 They can be configured individually and switched between easily.
 
 Initialize the empty list of layouts
-#+BEGIN_SRC python :noweb yes
+#+BEGIN_SRC python
 layouts = []
 #+END_SRC
 
@@ -375,14 +374,6 @@ keys.extend([
 Defining some colors for use in our panel.  Colors have two values because you can use gradients.
 
 #+BEGIN_SRC python
-# colors = [["#242730", "#242730"], # panel background
-#           ["#3d3f4b", "#434758"], # background for current screen tab
-#           ["#ffffff", "#ffffff"], # font color for group names
-#           ["#ff5555", "#ff5555"], # border line color for current tab
-#           ["#74438f", "#74438f"], # border line color for 'other tabs' and color for 'odd widgets'
-#           ["#4f76c7", "#4f76c7"], # color for the 'even widgets'
-#           ["#e1acff", "#e1acff"], # window name
-#           ["#ecbbfb", "#ecbbfb"]] # backbround for inactive screens
 colors = {
     "background":          ["#242730", "#242730"], # panel background
     "active_background":   ["#3d3f4b", "#434758"], # background for current screen tab
@@ -405,7 +396,6 @@ prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
 Defining a few default widget key values.
 
 #+BEGIN_SRC python
-### DEFAULT WIDGET SETTINGS #####
 widget_defaults = dict(
     font="UbuntuMono Nerd Font",
     fontsize = 12,
@@ -757,37 +747,6 @@ if __name__ in {"config", "__main__"}:
     widgets_screen2 = init_widgets_screen2()
 #+END_SRC
 
-* Some Important Functions
-
-#+begin_src python
-def window_to_prev_group(qtile):
-    if qtile.currentWindow is not None:
-        i = qtile.groups.index(qtile.currentGroup)
-        qtile.currentWindow.togroup(qtile.groups[i - 1].name)
-
-def window_to_next_group(qtile):
-    if qtile.currentWindow is not None:
-        i = qtile.groups.index(qtile.currentGroup)
-        qtile.currentWindow.togroup(qtile.groups[i + 1].name)
-
-def window_to_previous_screen(qtile):
-    i = qtile.screens.index(qtile.current_screen)
-    if i != 0:
-        group = qtile.screens[i - 1].group.name
-        qtile.current_window.togroup(group)
-
-def window_to_next_screen(qtile):
-    i = qtile.screens.index(qtile.current_screen)
-    if i + 1 != len(qtile.screens):
-        group = qtile.screens[i + 1].group.name
-        qtile.current_window.togroup(group)
-
-def switch_screens(qtile):
-    i = qtile.screens.index(qtile.current_screen)
-    group = qtile.screens[i - 1].group
-    qtile.current_screen.set_group(group)
-#+end_src
-
 * Drag floating windows
 Defining some mousebindings for use with floating windows.
 
@@ -800,7 +759,7 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front())
 ]
 
-dgroups_app_rules = []  # type: List
+dgroups_app_rules = []
 follow_mouse_focus = False
 bring_front_click = False
 cursor_warp = True
@@ -861,57 +820,13 @@ wmname = "LG3D"
 Background Services
 #+begin_src bash
 fish ~/.config/qtile/scripts/autorandr_cycle.fish
-# lxsession &
-# compositor
-# picom &
-# gnome authentication agent
-# /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-# pulse audio applet
-# pa-applet &
-# nm-applet &
-# tray-icon for pamac; looks for updates
-# pamac-tray &
 # clipboard
 clipit &
-# blue-light filter
-# redshift-gtk &
-# for corsair keyboards / mice
-# ckb-next -b &
-# mate-power-manager &
-# set keyboard layout to programmer dvorak with caps -> backspace
-# bash $HOME/.config/scripts/set_dvorak.sh &
-# enable numlock by default
-# numlockx on &
-# connect to vpn on startup
-# mullvad connect &
-# kde-connect for connection with android phones
-# kdeconnect-indicator &
-# set keyboard layout
-# setxkbmap us altgr-intl &
-
-# bash $HOME/.config/scripts/languagetool_server.sh &
-# languagetool-http-server &
 #+END_SRC
 
 Applications
 #+BEGIN_SRC bash
-# mullvad-vpn &
-# thunderbird &
-# slack &
-# anki &
-# telegram-desktop &
-# mattermost-desktop &
 element-desktop &
-# emacs --daemon &
-# emacsclient -a '' -c -e "(org-agenda-list)" &
-
-### UNCOMMENT ONLY ONE OF THE FOLLOWING THREE OPTIONS! ###
-# 1. Uncomment to restore last saved wallpaper
-# xargs xwallpaper --stretch < ~/.xwallpaper &
-# 2. Uncomment to set a random wallpaper on login
-# find /usr/share/backgrounds/dtos-backgrounds/ -type f | shuf -n 1 | xargs xwallpaper --stretch &
-# 3. Uncomment to set wallpaper with nitrogen
-# nitrogen --restore &
 feh --bg-fill ~/Pictures/Wallpaper/ultrawide.jpg --bg-fill ~/Pictures/Wallpaper/normal.png
 #+end_src
 

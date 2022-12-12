@@ -9,7 +9,7 @@ from libqtile.lazy import lazy
 from libqtile import layout, bar, widget, hook
 from typing import List  # noqa: F401from typing import List  # noqa: F401
 
-mod = "mod4"              # Sets mod key to SUPER/WINDOWS
+mod = "mod4"               # Sets mod key to SUPER/WINDOWS
 my_term = "alacritty"      # My terminal of choice
 my_browser = "firefox"     # My browser of choice
 home = os.path.expanduser('~')
@@ -266,14 +266,6 @@ keys.extend([
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
 ])
 
-# colors = [["#242730", "#242730"], # panel background
-#           ["#3d3f4b", "#434758"], # background for current screen tab
-#           ["#ffffff", "#ffffff"], # font color for group names
-#           ["#ff5555", "#ff5555"], # border line color for current tab
-#           ["#74438f", "#74438f"], # border line color for 'other tabs' and color for 'odd widgets'
-#           ["#4f76c7", "#4f76c7"], # color for the 'even widgets'
-#           ["#e1acff", "#e1acff"], # window name
-#           ["#ecbbfb", "#ecbbfb"]] # backbround for inactive screens
 colors = {
     "background":          ["#242730", "#242730"], # panel background
     "active_background":   ["#3d3f4b", "#434758"], # background for current screen tab
@@ -286,7 +278,6 @@ colors = {
 
 prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
 
-### DEFAULT WIDGET SETTINGS #####
 widget_defaults = dict(
     font="UbuntuMono Nerd Font",
     fontsize = 12,
@@ -627,33 +618,6 @@ if __name__ in {"config", "__main__"}:
     widgets_screen1 = init_widgets_screen1()
     widgets_screen2 = init_widgets_screen2()
 
-def window_to_prev_group(qtile):
-    if qtile.currentWindow is not None:
-        i = qtile.groups.index(qtile.currentGroup)
-        qtile.currentWindow.togroup(qtile.groups[i - 1].name)
-
-def window_to_next_group(qtile):
-    if qtile.currentWindow is not None:
-        i = qtile.groups.index(qtile.currentGroup)
-        qtile.currentWindow.togroup(qtile.groups[i + 1].name)
-
-def window_to_previous_screen(qtile):
-    i = qtile.screens.index(qtile.current_screen)
-    if i != 0:
-        group = qtile.screens[i - 1].group.name
-        qtile.current_window.togroup(group)
-
-def window_to_next_screen(qtile):
-    i = qtile.screens.index(qtile.current_screen)
-    if i + 1 != len(qtile.screens):
-        group = qtile.screens[i + 1].group.name
-        qtile.current_window.togroup(group)
-
-def switch_screens(qtile):
-    i = qtile.screens.index(qtile.current_screen)
-    group = qtile.screens[i - 1].group
-    qtile.current_screen.set_group(group)
-
 mouse = [
     Drag([mod], "Button1", lazy.window.set_position_floating(),
          start=lazy.window.get_position()),
@@ -662,7 +626,7 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front())
 ]
 
-dgroups_app_rules = []  # type: List
+dgroups_app_rules = []
 follow_mouse_focus = False
 bring_front_click = False
 cursor_warp = True
