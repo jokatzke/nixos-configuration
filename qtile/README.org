@@ -4,8 +4,6 @@
 #+auto_tangle: t
 
 * Table of Contents :toc:
-- [[#about-this-config][About This Config]]
-- [[#features-of-qtile][Features of Qtile]]
 - [[#imports][Imports]]
 - [[#variables][Variables]]
 - [[#layouts][Layouts]]
@@ -29,38 +27,6 @@
 - [[#startup-applications][Startup applications]]
   - [[#startup-script-x11][Startup Script X11]]
   - [[#startup-script-wayland][Startup Script Wayland]]
-
-* About This Config
-#+CAPTION: Qtile Scrot
-#+ATTR_HTML: :alt Qtile Scrot :title Qtile Scrot :align left
-[[https://gitlab.com/dwt1/dotfiles/-/raw/master/.screenshots/dotfiles07-thumb.png]]
-
-The following comments are the copyright and licensing information from the default
-qtile config. Copyright (c) 2010 Aldo Cortesi, 2010, 2014 dequis, 2012 Randall Ma,
-2012-2014 Tycho Andersen, 2012 Craig Barnes, 2013 horsik, 2013 Tao Sauvage
-
-Modified by Derek Taylor
-  - My YouTube: [[http://www.youtube.com/c/DistroTube][http://www.youtube.com/c/DistroTube]]
-  - My GitLab:  [[http://www.gitlab.com/dwt1/][http://www.gitlab.com/dwt1/]]
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this
-    software and associated documentation files (the "Software"), to deal in the Software
-    without restriction, including without limitation the rights to use, copy, modify,
-    merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-    permit persons to whom the Software is furnished to do so, subject to the following
-    conditions:
-
-    The above copyright notice and this permission notice shall be included in all copies
-    or substantial portions of the Software.
-
-    Further modified by me (Yusu)
-
-* Features of Qtile
-- Simple, small and extensible. It's easy to write your own layouts, widgets and commands.
-- Configured in Python.
-- Command shell that allows all aspects of Qtile to be managed and inspected.
-- Complete remote scriptability - write scripts to set up workspaces, manipulate windows, update status bar widgets and more.
-- Qtile's remote scriptability makes it one of the most thoroughly unit-tested window managers around.
 
 * Imports
 These are python modules that must be imported for this config.
