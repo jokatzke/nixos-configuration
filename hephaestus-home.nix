@@ -317,8 +317,7 @@ programs = {
 
 services = {
   mbsync = {
-    enable = true;
-    # frequency = "*:0/5";
+    enable = false;
     preExec = "${pkgs.isync}/bin/mbsync -Ha";
     postExec = "${pkgs.mu}/bin/mu index -m ${maildir}";
   };
