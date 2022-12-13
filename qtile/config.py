@@ -631,16 +631,19 @@ follow_mouse_focus = False
 bring_front_click = False
 cursor_warp = True
 
-floating_layout = layout.Floating(float_rules=[
-    # Run the utility of `xprop` to see the wm class and name of an X client.
-    # default_float_rules include: utility, notification, toolbar, splash, dialog,
-    # file_progress, confirm, download and error.
-    *layout.Floating.default_float_rules,
-    Match(title="Confirmation"),      # tastyworks exit box
-    Match(title="Qalculate!"),        # qalculate-gtk
-    Match(wm_class="kdenlive"),       # kdenlive
-    Match(wm_class="pinentry-gtk-2"), # GPG key password entry
-])
+floating_layout = layout.Floating(
+    float_rules=[
+        # Run the utility of `xprop` to see the wm class and name of an X client.
+        # default_float_rules include: utility, notification, toolbar, splash, dialog,
+        # file_progress, confirm, download and error.
+        *layout.Floating.default_float_rules,
+        Match(title="Confirmation"),  # tastyworks exit box
+        Match(title="Qalculate!"),  # qalculate-gtk
+        Match(wm_class="kdenlive"),  # kdenlive
+        Match(wm_class="pinentry-gtk-2"),  # GPG key password entry
+        Match(wm_class="librewolf"),
+    ]
+)
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
