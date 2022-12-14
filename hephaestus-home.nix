@@ -288,11 +288,12 @@ programs.direnv = {
 
 programs.emacs = {
   enable = true;
-  package = pkgs.emacs-gtk;
+  package = pkgs.emacs;
+  extraPackages = epkgs: [ epkgs.emacsql-sqlite ];
 };
 services.emacs = {
   enable = true;
-  package = pkgs.emacs-gtk;
+  package = config.programs.emacs.finalPackage;
   defaultEditor = true;
 };
 

@@ -915,11 +915,12 @@ Install Emacs and run it as a service on startup.
 #+begin_src nix
 programs.emacs = {
   enable = true;
-  package = pkgs.emacs-gtk;
+  package = pkgs.emacs;
+  extraPackages = epkgs: [ epkgs.emacsql-sqlite ];
 };
 services.emacs = {
   enable = true;
-  package = pkgs.emacs-gtk;
+  package = config.programs.emacs.finalPackage;
   defaultEditor = true;
 };
 #+end_src
