@@ -67,43 +67,6 @@ groups = [
     Group(name=group_keys[10], label="N", layout="monadtall"),
 ]
 
-dropdown_width = 0.4
-dropdown_height = 0.65
-dropdown_defaults = {
-    "opacity": 0.8,
-    "height": dropdown_height,
-    "width": dropdown_width,
-    "x": (1 - dropdown_width) / 2,
-    "y": (1 - dropdown_height) / 2,
-    "on_focus_lost_hide": True,
-}
-
-dropdowns = {
-    "terminal": DropDown("terminal dropdown", cmd=my_term, **dropdown_defaults),
-    "calculator": DropDown(
-        "calculator dropdown",
-        cmd=f"{my_term} -e emacsclient -cte '(full-calc)'",
-        **dropdown_defaults,
-    ),
-    "gtd": DropDown(
-        "gtd main dropdown", cmd=f"{my_term} -e emacsclient -ct ~/gtd/gtd.org", **dropdown_defaults
-    ),
-    "gtd inbox": DropDown(
-        "gtd inbox dropdown", cmd=f"{my_term} -e emacsclient -ct ~/gtd/inbox.org", **dropdown_defaults
-    ),
-    "gtd someday": DropDown(
-        "gtd someday dropdown",
-        cmd=f"{my_term} -e emacsclient -ct ~/gtd/someday.org",
-        **dropdown_defaults,
-    ),
-    "mail": DropDown(
-        "mail dropdown", cmd=f"{my_term} -e emacsclient -cte '(mu4e)'", **dropdown_defaults
-    ),
-}
-
-scratchpad = ScratchPad(name="scratchpad", dropdowns=list(dropdowns.values()))
-groups.append(scratchpad)
-
 keys = []
 
 keys.extend([
@@ -157,36 +120,6 @@ for monitor, group_keys in enumerate([left_keys, right_keys]):
                ),
          ]
       )
-
-keys.extend(
-    [
-        Key(
-            [mod, "mod1"],
-            "Return",
-            lazy.group["scratchpad"].dropdown_toggle(dropdowns["terminal"].name),
-        ),
-        Key(
-            [mod, "mod1"],
-            "c",
-            lazy.group["scratchpad"].dropdown_toggle(dropdowns["calculator"].name),
-        ),
-        Key(
-            [mod, "mod1"],
-            "i",
-            lazy.group["scratchpad"].dropdown_toggle(dropdowns["gtd inbox"].name),
-        ),
-        Key(
-            [mod, "mod1"],
-            "g",
-            lazy.group["scratchpad"].dropdown_toggle(dropdowns["gtd"].name),
-        ),
-        Key(
-            [mod, "mod1"],
-            "m",
-            lazy.group["scratchpad"].dropdown_toggle(dropdowns["mail"].name),
-        ),
-    ]
-)
 
 vim_down = "j"
 vim_up = "k"
@@ -331,6 +264,97 @@ keys.extend([
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
 ])
+
+scratchpads = []
+
+scratchpads.append({"key": "Return", "cmd": my_term})
+
+scratchpads.extend(
+    [
+        {"key": key, "cmd": f"{my_term} -e emacsclient -ct {file}"}
+        for key, file in [
+            ("i", "~/gtd/inbox.org"),
+            ("g", "~/gtd/gtd.org"),
+            ("t", "~/gtd/tickler.org"),
+        ]
+    ]
+)
+
+scratchpads.extend(
+    [
+        {"key": key, "cmd": f'{my_term} -e emacsclient -cte "{cmd}"'}
+        for key, cmd in [
+            ("c", "(full-calc)"),
+            ("m", "(mu4e)"),
+        ]
+    ]
+)
+
+scratchpads.append(
+    {
+        "key": "b",
+        "cmd": my_browser,
+        "height": 0.6,
+        "opacity": 0.9,
+        "width": 0.6,
+        "centered": False,
+        "x": 0.4,
+        "y": 0.4,
+    }
+)
+
+def get_name(key: str, cmd: str) -> str:
+    return f"{cmd}+{key} scratchpad"
+
+def get_dropdown(
+    key: str,
+    cmd: str,
+    modifiers: list[str] = ["mod1", "mod4"],
+    opacity: float = 0.8,
+    height: float = 0.65,
+    width: float = 0.4,
+    centered: bool = True,
+    x: float = 0,
+    y: float = 0,
+    on_focus_lost_hide: bool = True,
+    **kwargs,
+) -> DropDown:
+    # create a name that will identify this entry
+    name = get_name(key, cmd)
+    # if centered, calculate the correct x- and y-values
+    # such that the window is indeed centered
+    if centered:
+        x = (1 - width) / 2
+        y = (1 - height) / 2
+    # create the DropDown entry that will contain the window
+    return DropDown(
+        name=name,
+        cmd=cmd,
+        opacity=opacity,
+        height=height,
+        width=width,
+        x=x,
+        y=y,
+        on_focus_lost_hide=on_focus_lost_hide,
+        **kwargs,
+    )
+
+
+dropdowns = [get_dropdown(**kwargs) for kwargs in scratchpads]
+
+groups.append(ScratchPad("scratchpad", dropdowns))
+
+def get_dropdown_toggle_key(
+    key: str,
+    cmd: str,
+    modifiers: list[str] = ["mod4", "mod1"],
+    **kwargs,
+) -> Key:
+    name = get_name(key, cmd)
+    return Key(modifiers, key, lazy.group["scratchpad"].dropdown_toggle(name))
+
+
+keys.extend([get_dropdown_toggle_key(**kwargs) for kwargs in scratchpads])
 
 colors = {
     "background":          ["#242730", "#242730"], # panel background

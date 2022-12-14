@@ -5,11 +5,10 @@
 
 * Table of Contents :toc:
 - [[#imports][Imports]]
-- [[#variables][Variables]]
+- [[#constants][Constants]]
 - [[#layouts][Layouts]]
   - [[#layout-configuration][Layout Configuration]]
 - [[#groups][Groups]]
-  - [[#scratchpads][Scratchpads]]
 - [[#keybindings][Keybindings]]
   - [[#essentials][Essentials]]
   - [[#groups-1][Groups]]
@@ -17,6 +16,9 @@
   - [[#applications--scripts][Applications & Scripts]]
   - [[#media-keys][Media Keys]]
   - [[#brightness-controls][Brightness Controls]]
+- [[#scratchpads][Scratchpads]]
+  - [[#creating-scratchpads][Creating Scratchpads]]
+  - [[#technicalities-putting-everything-together][Technicalities (Putting Everything Together)]]
 - [[#colors][Colors]]
 - [[#prompt][Prompt]]
 - [[#default-widget-settings][Default Widget Settings]]
@@ -43,7 +45,7 @@ from libqtile import layout, bar, widget, hook
 from typing import List  # noqa: F401from typing import List  # noqa: F401
 #+END_SRC
 
-* Variables
+* Constants
 Define common applications and folders as variables.
 
 #+BEGIN_SRC python
@@ -142,57 +144,6 @@ groups = [
 ]
 #+end_src
 
-** Scratchpads
-Additionally define [[http://docs.qtile.org/en/latest/manual/config/groups.html#scratchpad-and-dropdown][Scratchpads]], special groups that are hidden by default.
-The visibility of a =ScratchPad='s content can be toggled on any active group, overlaying its contents when visible.
-This behavior is useful for applications that are frequently used for quick tasks, e.g. a terminal emulator.
-
-Define default values for the =DropDown= objects, i.e. their opacity, dimensions, and position.
-#+begin_src python
-dropdown_width = 0.4
-dropdown_height = 0.65
-dropdown_defaults = {
-    "opacity": 0.8,
-    "height": dropdown_height,
-    "width": dropdown_width,
-    "x": (1 - dropdown_width) / 2,
-    "y": (1 - dropdown_height) / 2,
-    "on_focus_lost_hide": True,
-}
-#+end_src
-
-Define the =DropDown= objects that are contained within the =ScratchPad=.
-#+begin_src python
-dropdowns = {
-    "terminal": DropDown("terminal dropdown", cmd=my_term, **dropdown_defaults),
-    "calculator": DropDown(
-        "calculator dropdown",
-        cmd=f"{my_term} -e emacsclient -cte '(full-calc)'",
-        ,**dropdown_defaults,
-    ),
-    "gtd": DropDown(
-        "gtd main dropdown", cmd=f"{my_term} -e emacsclient -ct ~/gtd/gtd.org", **dropdown_defaults
-    ),
-    "gtd inbox": DropDown(
-        "gtd inbox dropdown", cmd=f"{my_term} -e emacsclient -ct ~/gtd/inbox.org", **dropdown_defaults
-    ),
-    "gtd someday": DropDown(
-        "gtd someday dropdown",
-        cmd=f"{my_term} -e emacsclient -ct ~/gtd/someday.org",
-        ,**dropdown_defaults,
-    ),
-    "mail": DropDown(
-        "mail dropdown", cmd=f"{my_term} -e emacsclient -cte '(mu4e)'", **dropdown_defaults
-    ),
-}
-#+end_src
-
-Define a single scratchpad with all of these =DropDown= items and add it to the list of groups.
-#+begin_src python
-scratchpad = ScratchPad(name="scratchpad", dropdowns=list(dropdowns.values()))
-groups.append(scratchpad)
-#+end_src
-
 * Keybindings
 All keybindings are stored in the list ~keys~.
 
@@ -260,39 +211,6 @@ for monitor, group_keys in enumerate([left_keys, right_keys]):
                ),
          ]
       )
-#+end_src
-
-Bind keys to toggle the visibility of scratchpad entries (see [[Scratchpads]])
-#+begin_src python
-keys.extend(
-    [
-        Key(
-            [mod, "mod1"],
-            "Return",
-            lazy.group["scratchpad"].dropdown_toggle(dropdowns["terminal"].name),
-        ),
-        Key(
-            [mod, "mod1"],
-            "c",
-            lazy.group["scratchpad"].dropdown_toggle(dropdowns["calculator"].name),
-        ),
-        Key(
-            [mod, "mod1"],
-            "i",
-            lazy.group["scratchpad"].dropdown_toggle(dropdowns["gtd inbox"].name),
-        ),
-        Key(
-            [mod, "mod1"],
-            "g",
-            lazy.group["scratchpad"].dropdown_toggle(dropdowns["gtd"].name),
-        ),
-        Key(
-            [mod, "mod1"],
-            "m",
-            lazy.group["scratchpad"].dropdown_toggle(dropdowns["mail"].name),
-        ),
-    ]
-)
 #+end_src
 
 ** Windows
@@ -453,6 +371,150 @@ keys.extend([
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
 ])
+#+end_src
+
+* Scratchpads
+[[http://docs.qtile.org/en/latest/manual/config/groups.html#scratchpad-and-dropdown][Scratchpads]] are special groups that are hidden by default.
+The visibility of a scratchpad's content can be toggled on any active group, overlaying its contents when visible.
+This behavior is useful for applications that are frequently used for quick tasks, e.g. a terminal emulator.
+
+To make configuration easier, all technical details are hidden behind [[id:60750bf9-47fc-4a20-bfb6-b198ecb6c66f][Technicalities (Putting Everything Together)]].
+It does not need to be edited in order to do basic tasks, like adding new scratchpads, changing their keys, or editing individual dimensions / position.
+
+** Creating Scratchpads
+:PROPERTIES:
+:ID:       9914f159-5401-4c15-b17f-1fe91350d429
+:END:
+Define the key to toggle the visibility of a particular scratchpad item, along with the command to create its content.
+Optionally, the default values can be overridden.
+By default:
+- The given key, along with Super and Alt (=mod4= and =mod1=, respectively), are used to toggle visibility of the scratchpad.
+- The window is centered on the screen.
+- Moving the focus away from the window will hide it.
+These default behaviors can individually overridden.
+
+First, initialize an empty =list= that shall store the scratchpad information.
+#+begin_src python
+scratchpads = []
+#+end_src
+
+Add a terminal emulator scratchpad.
+#+begin_src python
+scratchpads.append({"key": "Return", "cmd": my_term})
+#+end_src
+
+Add GTD related scratchpads, using Emacs running inside of a terminal.
+#+begin_src python
+scratchpads.extend(
+    [
+        {"key": key, "cmd": f"{my_term} -e emacsclient -ct {file}"}
+        for key, file in [
+            ("i", "~/gtd/inbox.org"),
+            ("g", "~/gtd/gtd.org"),
+            ("t", "~/gtd/tickler.org"),
+        ]
+    ]
+)
+#+end_src
+
+Add a calculator and mail scratchpad (each in Emacs).
+#+begin_src python
+scratchpads.extend(
+    [
+        {"key": key, "cmd": f'{my_term} -e emacsclient -cte "{cmd}"'}
+        for key, cmd in [
+            ("c", "(full-calc)"),
+            ("m", "(mu4e)"),
+        ]
+    ]
+)
+#+end_src
+
+Add an internet browser scratchpad, overriding the default settings such that it is positioned in the bottom-right of the screen.
+#+begin_src python
+scratchpads.append(
+    {
+        "key": "b",
+        "cmd": my_browser,
+        "height": 0.6,
+        "opacity": 0.9,
+        "width": 0.6,
+        "centered": False,
+        "x": 0.4,
+        "y": 0.4,
+    }
+)
+#+end_src
+
+** Technicalities (Putting Everything Together)
+:PROPERTIES:
+:ID:       60750bf9-47fc-4a20-bfb6-b198ecb6c66f
+:END:
+In this section, use the data defined in [[id:9914f159-5401-4c15-b17f-1fe91350d429][Creating Scratchpads]] to create the scratchpads and bind them to the given keys.
+
+Define a helper function to generate a name, given a key-bind and a command.
+#+begin_src python
+def get_name(key: str, cmd: str) -> str:
+    return f"{cmd}+{key} scratchpad"
+#+end_src
+
+Define the =DropDown= items contained in the =ScratchPad= group.
+#+begin_src python
+def get_dropdown(
+    key: str,
+    cmd: str,
+    modifiers: list[str] = ["mod1", "mod4"],
+    opacity: float = 0.8,
+    height: float = 0.65,
+    width: float = 0.4,
+    centered: bool = True,
+    x: float = 0,
+    y: float = 0,
+    on_focus_lost_hide: bool = True,
+    ,**kwargs,
+) -> DropDown:
+    # create a name that will identify this entry
+    name = get_name(key, cmd)
+    # if centered, calculate the correct x- and y-values
+    # such that the window is indeed centered
+    if centered:
+        x = (1 - width) / 2
+        y = (1 - height) / 2
+    # create the DropDown entry that will contain the window
+    return DropDown(
+        name=name,
+        cmd=cmd,
+        opacity=opacity,
+        height=height,
+        width=width,
+        x=x,
+        y=y,
+        on_focus_lost_hide=on_focus_lost_hide,
+        ,**kwargs,
+    )
+
+
+dropdowns = [get_dropdown(**kwargs) for kwargs in scratchpads]
+#+end_src
+
+Add the defined =DropDown= items to a new =ScratchPad= group.
+#+begin_src python
+groups.append(ScratchPad("scratchpad", dropdowns))
+#+end_src
+
+Bind the defined keys.
+#+begin_src python
+def get_dropdown_toggle_key(
+    key: str,
+    cmd: str,
+    modifiers: list[str] = ["mod4", "mod1"],
+    ,**kwargs,
+) -> Key:
+    name = get_name(key, cmd)
+    return Key(modifiers, key, lazy.group["scratchpad"].dropdown_toggle(name))
+
+
+keys.extend([get_dropdown_toggle_key(**kwargs) for kwargs in scratchpads])
 #+end_src
 
 * Colors
