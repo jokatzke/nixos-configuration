@@ -9,6 +9,7 @@
 - [[#layouts][Layouts]]
   - [[#layout-configuration][Layout Configuration]]
 - [[#groups][Groups]]
+  - [[#scratchpads][Scratchpads]]
 - [[#keybindings][Keybindings]]
   - [[#essentials][Essentials]]
   - [[#groups-1][Groups]]
@@ -31,13 +32,12 @@
 These are python modules that must be imported for this config.
 
 #+BEGIN_SRC python
-# -*- coding: utf-8 -*-
 import os
 import re
 import socket
 import subprocess
 from libqtile import qtile
-from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
 from libqtile import layout, bar, widget, hook
 from typing import List  # noqa: F401from typing import List  # noqa: F401
@@ -142,6 +142,57 @@ groups = [
 ]
 #+end_src
 
+** Scratchpads
+Additionally define [[http://docs.qtile.org/en/latest/manual/config/groups.html#scratchpad-and-dropdown][Scratchpads]], special groups that are hidden by default.
+The visibility of a =ScratchPad='s content can be toggled on any active group, overlaying its contents when visible.
+This behavior is useful for applications that are frequently used for quick tasks, e.g. a terminal emulator.
+
+Define default values for the =DropDown= objects, i.e. their opacity, dimensions, and position.
+#+begin_src python
+dropdown_width = 0.4
+dropdown_height = 0.65
+dropdown_defaults = {
+    "opacity": 0.8,
+    "height": dropdown_height,
+    "width": dropdown_width,
+    "x": (1 - dropdown_width) / 2,
+    "y": (1 - dropdown_height) / 2,
+    "on_focus_lost_hide": True,
+}
+#+end_src
+
+Define the =DropDown= objects that are contained within the =ScratchPad=.
+#+begin_src python
+dropdowns = {
+    "terminal": DropDown("terminal dropdown", cmd=my_term, **dropdown_defaults),
+    "calculator": DropDown(
+        "calculator dropdown",
+        cmd=f"{my_term} -e emacsclient -cte '(full-calc)'",
+        ,**dropdown_defaults,
+    ),
+    "gtd": DropDown(
+        "gtd main dropdown", cmd=f"{my_term} -e emacsclient -ct ~/gtd/gtd.org", **dropdown_defaults
+    ),
+    "gtd inbox": DropDown(
+        "gtd inbox dropdown", cmd=f"{my_term} -e emacsclient -ct ~/gtd/inbox.org", **dropdown_defaults
+    ),
+    "gtd someday": DropDown(
+        "gtd someday dropdown",
+        cmd=f"{my_term} -e emacsclient -ct ~/gtd/someday.org",
+        ,**dropdown_defaults,
+    ),
+    "mail": DropDown(
+        "mail dropdown", cmd=f"{my_term} -e emacsclient -cte '(mu4e)'", **dropdown_defaults
+    ),
+}
+#+end_src
+
+Define a single scratchpad with all of these =DropDown= items and add it to the list of groups.
+#+begin_src python
+scratchpad = ScratchPad(name="scratchpad", dropdowns=list(dropdowns.values()))
+groups.append(scratchpad)
+#+end_src
+
 * Keybindings
 All keybindings are stored in the list ~keys~.
 
@@ -180,6 +231,7 @@ keys.extend([
 ** Groups
 Keybinds that are related to moving (windows) to groups [workspaces].
 
+Bind the keys for interacting with the primary groups
 #+begin_src python
 for monitor, group_keys in enumerate([left_keys, right_keys]):
    for key in group_keys:
@@ -208,6 +260,39 @@ for monitor, group_keys in enumerate([left_keys, right_keys]):
                ),
          ]
       )
+#+end_src
+
+Bind keys to toggle the visibility of scratchpad entries (see [[Scratchpads]])
+#+begin_src python
+keys.extend(
+    [
+        Key(
+            [mod, "mod1"],
+            "Return",
+            lazy.group["scratchpad"].dropdown_toggle(dropdowns["terminal"].name),
+        ),
+        Key(
+            [mod, "mod1"],
+            "c",
+            lazy.group["scratchpad"].dropdown_toggle(dropdowns["calculator"].name),
+        ),
+        Key(
+            [mod, "mod1"],
+            "i",
+            lazy.group["scratchpad"].dropdown_toggle(dropdowns["gtd inbox"].name),
+        ),
+        Key(
+            [mod, "mod1"],
+            "g",
+            lazy.group["scratchpad"].dropdown_toggle(dropdowns["gtd"].name),
+        ),
+        Key(
+            [mod, "mod1"],
+            "m",
+            lazy.group["scratchpad"].dropdown_toggle(dropdowns["mail"].name),
+        ),
+    ]
+)
 #+end_src
 
 ** Windows
@@ -296,7 +381,7 @@ keys.extend(
             lazy.spawn("pavucontrol"),
             desc="PulseAudio-Control"),
         Key([mod], "Return",
-            lazy.spawn(my_term + " -e fish"),
+            lazy.spawn(my_term),
             desc="Terminal"),
         Key([mod], "a",
             lazy.spawn("emacsclient -c -a 'emacs'"),
@@ -775,10 +860,10 @@ floating_layout = layout.Floating(
         # default_float_rules include: utility, notification, toolbar, splash, dialog,
         # file_progress, confirm, download and error.
         ,*layout.Floating.default_float_rules,
-        Match(title="Confirmation"),  # tastyworks exit box
-        Match(title="Qalculate!"),  # qalculate-gtk
-        Match(wm_class="kdenlive"),  # kdenlive
-        Match(wm_class="pinentry-gtk-2"),  # GPG key password entry
+        Match(title="Confirmation"),        # tastyworks exit box
+        Match(title="Qalculate!"),          # qalculate-gtk
+        Match(wm_class="kdenlive"),         # kdenlive
+        Match(wm_class="pinentry-gtk-2"),   # GPG key password entry
         Match(wm_class="librewolf"),
     ]
 )
