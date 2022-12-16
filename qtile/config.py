@@ -214,9 +214,6 @@ keys.extend(
         Key(["control", "shift"], "Escape",
             lazy.spawn("plasma-systemmonitor"),
             desc="System Monitor"),
-        Key([mod], "semicolon",
-            lazy.spawn("emacsclient --eval '(emacs-everywhere)'"),
-            desc="Write in Emacs instead"),
         Key([mod, "shift"], "b",
             lazy.spawn(
                 f"{my_term} -e '{home}/.config/scripts/add-to-bib.fish'"
@@ -271,7 +268,7 @@ scratchpads.append({"key": "Return", "cmd": my_term})
 
 scratchpads.extend(
     [
-        {"key": key, "cmd": f"{my_term} -e emacsclient -ct {file}"}
+        {"key": key, "cmd": f"{my_term} -e emacsclient -ct {file}", "opacity": 1.0}
         for key, file in [
             ("i", "~/gtd/inbox.org"),
             ("g", "~/gtd/gtd.org"),
@@ -282,11 +279,8 @@ scratchpads.extend(
 
 scratchpads.extend(
     [
-        {"key": key, "cmd": f'{my_term} -e emacsclient -cte "{cmd}"'}
-        for key, cmd in [
-            ("c", "(full-calc)"),
-            ("m", "(mu4e)"),
-        ]
+        {"key": key, "cmd": f'{my_term} -e emacsclient -cte "{cmd}"', "opacity": 0.9}
+        for key, cmd in [("c", "(full-calc)"), ("m", "(mu4e)"), ("a", "(org-agenda)")]
     ]
 )
 
@@ -294,8 +288,8 @@ scratchpads.append(
     {
         "key": "b",
         "cmd": my_browser,
-        "height": 0.6,
         "opacity": 0.9,
+        "height": 0.6,
         "width": 0.6,
         "centered": False,
         "x": 0.4,
