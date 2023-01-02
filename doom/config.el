@@ -556,6 +556,13 @@ are exported to a filename derived from the headline text."
 (defun org-current-is-todo ()
   (string= "TODO" (org-get-todo-state)))
 
+(setq! org-agenda-span 17)
+
+(setq! inhibit-splash-screen t)
+(setq! initial-buffer-choice (lambda ()
+    (org-agenda-list)
+    (get-buffer "*Org Agenda*")))
+
 (use-package org-fc
   :after org
   :custom

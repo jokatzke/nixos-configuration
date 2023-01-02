@@ -44,7 +44,7 @@ Aesthetic modules that affect the Emacs interface or user experience.
 :ui
 ;;deft              ; notational velocity for Emacs
 doom              ; what makes DOOM look the way it does
-doom-dashboard    ; a nifty splash screen for Emacs
+;; doom-dashboard    ; a nifty splash screen for Emacs
 doom-quit         ; DOOM quit-message prompts when you quit Emacs
 ;;(emoji +unicode)  ; 🙂
 hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
@@ -1091,7 +1091,7 @@ are exported to a filename derived from the headline text."
   )
 #+end_src
 
-*** Getting Things Done
+*** Getting Things Done (TODOs / Agenda)
 
 Define the locations of the files relating to GTD
 #+begin_src elisp
@@ -1159,6 +1159,21 @@ Define custom org-agenda commands to show the relevant tasks for a certain conte
 
 (defun org-current-is-todo ()
   (string= "TODO" (org-get-todo-state)))
+#+end_src
+
+Change the span of ~org-agenda~ to be 17 days.
+This way, the previous three days and the next two weeks will be shown.
+#+begin_src elisp
+(setq! org-agenda-span 17)
+#+end_src
+
+Open the ~org-agenda~ on startup of emacs.
+Taken from https://stackoverflow.com/a/32467530/17299719
+#+begin_src elisp
+(setq! inhibit-splash-screen t)
+(setq! initial-buffer-choice (lambda ()
+    (org-agenda-list)
+    (get-buffer "*Org Agenda*")))
 #+end_src
 
 *** Flashcards / Spaced Repetition
