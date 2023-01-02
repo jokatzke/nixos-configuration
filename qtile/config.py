@@ -11,7 +11,7 @@ from typing import List  # noqa: F401from typing import List  # noqa: F401
 mod = "mod4"               # Sets mod key to SUPER/WINDOWS
 my_term = "alacritty"      # My terminal of choice
 my_browser = "firefox"     # My browser of choice
-home = os.path.expanduser('~')
+HOME = os.path.expanduser('~')
 
 layouts = []
 
@@ -88,7 +88,7 @@ keys.extend([
         desc='Shutdown Qtile'
         ),
     Key([mod], "Escape",
-        lazy.spawn(f"rofi -show powermenu -modi powermenu:{home}/.config/scripts/rofi/rofi-power-menu.sh"),
+        lazy.spawn(f"rofi -show powermenu -modi powermenu:{HOME}/.config/scripts/rofi/rofi-power-menu.sh"),
         desc="Rofi Power-Menu",
         )
 ])
@@ -216,7 +216,7 @@ keys.extend(
             desc="System Monitor"),
         Key([mod, "shift"], "b",
             lazy.spawn(
-                f"{my_term} -e '{home}/.config/scripts/add-to-bib.fish'"
+                f"{my_term} -e '{HOME}/.config/scripts/add-to-bib.fish'"
             ),
             desc="Bibliography Utility"),
 
@@ -225,22 +225,22 @@ keys.extend(
             lazy.spawn("rofi -show combi -show-icons"),
             desc="d-Menu"),
         Key([mod], "o",
-            lazy.spawn(f"fish {home}/.config/scripts/rofi/rofi-edit.fish"),
+            lazy.spawn(f"fish {HOME}/.config/scripts/rofi/rofi-edit.fish"),
             desc="Open Config Files"),
         Key([mod, "shift"], "a",
             lazy.spawn(
-                f"bash {home}/.config/scripts/rofi/rofi-add-transaction.sh"
+                f"bash {HOME}/.config/scripts/rofi/rofi-add-transaction.sh"
             ),
             desc="Ledger Utility"),
         Key([mod], "z",
             lazy.spawn(
-                f"fish {home}/.config/scripts/rofi/rofi-gtd.fish"
+                f"fish {HOME}/.config/scripts/rofi/rofi-gtd.fish"
             ),
             desc="GTD Utility"),
 
         # cycle through autorandr profiles
         Key([mod, "shift"], "grave",
-            lazy.spawn(f"fish {home}/.config/scripts/qtile/autorandr_cycle.fish"),
+            lazy.spawn(f"fish {HOME}/.config/scripts/qtile/autorandr_cycle.fish"),
             desc='Cycle through autorandr profiles'
             ),
     ]
@@ -737,11 +737,30 @@ reconfigure_screens = True
 auto_minimize = False
 
 @hook.subscribe.startup_once
-def start_once():
+def autostart():
+    applications = []
     if qtile.core.name == "x11":
-        subprocess.call([home + '/.config/qtile/autostart_x11.sh'])
+        applications.extend(
+            [
+                # [f"{HOME}/.config/scripts/qtile/autorandr_cycle.fish"],
+                [
+                    "feh",
+                    "--bg-fill",
+                    f"{HOME}/Pictures/Wallpaper/ultrawide.jpg",
+                    "--bg-fill",
+                    f"{HOME}/Pictures/Wallpaper/normal.png",
+                ],
+                ["element-desktop"],
+            ]
+        )
+
     elif qtile.core.name == "wayland":
-        subprocess.call([home + '/.config/qtile/autostart_wayland.sh'])
+        subprocess.run([HOME + "/.config/qtile/autostart_wayland.sh"])
+
+    if applications:
+        for application in applications:
+            subprocess.Popen(application)
+
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
