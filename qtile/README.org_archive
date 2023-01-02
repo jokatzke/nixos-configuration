@@ -1,0 +1,29 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /etc/nixos/qtile/README.org
+
+
+* Startup Script X11
+:PROPERTIES:
+:header-args: :tangle autostart_x11.sh :shebang #!/usr/bin/env bash
+:ARCHIVE_TIME: 2023-01-02 Mo 12:13
+:ARCHIVE_FILE: /etc/nixos/qtile/README.org
+:ARCHIVE_OLPATH: Startup applications
+:ARCHIVE_CATEGORY: README
+:END:
+
+Background Services
+#+begin_src bash
+fish ~/.config/qtile/scripts/autorandr_cycle.fish
+# clipboard
+clipit &
+#+END_SRC
+
+Applications
+#+BEGIN_SRC bash
+element-desktop &
+emacsclient -ca "emacs" -e "(org-agenda-list)" &
+feh --bg-fill ~/Pictures/Wallpaper/ultrawide.jpg --bg-fill ~/Pictures/Wallpaper/normal.png
+#+end_src
+
