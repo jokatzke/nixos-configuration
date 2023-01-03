@@ -266,6 +266,8 @@ scratchpads = []
 
 scratchpads.append({"key": "Return", "cmd": my_term})
 
+scratchpads.append({"key": "r", "cmd": f"{my_term} -e sudo nixos-rebuild switch"})
+
 scratchpads.extend(
     [
         {"key": key, "cmd": f"emacs {file}", "opacity": 1.0}
@@ -300,7 +302,9 @@ scratchpads.append(
 @hook.subscribe.startup_complete
 def autostart_scratchpads():
     for scratchpad in scratchpads:
-        if scratchpad["key"] in ["m"]:
+        # skip nixos rebuild for obvious reasons
+        # and mail, as it will require the unlocking of my password manager
+        if scratchpad["key"] in ["m", "r"]:
             continue
 
         qtile.cmd_simulate_keypress(["mod1", "mod4"], scratchpad["key"])
@@ -758,6 +762,7 @@ def autostart():
                     f"{HOME}/Pictures/Wallpaper/normal.png",
                 ],
                 ["element-desktop"],
+                ["discord"],
             ]
         )
 

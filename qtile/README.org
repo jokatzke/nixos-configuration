@@ -399,6 +399,11 @@ Add a terminal emulator scratchpad.
 scratchpads.append({"key": "Return", "cmd": my_term})
 #+end_src
 
+A scratchpad that rebuilds ~NixOS~ using the current configuration.
+#+begin_src python
+scratchpads.append({"key": "r", "cmd": f"{my_term} -e sudo nixos-rebuild switch"})
+#+end_src
+
 Add GTD related scratchpads, using Emacs running inside of a terminal.
 #+begin_src python
 scratchpads.extend(
@@ -439,13 +444,15 @@ scratchpads.append(
 )
 #+end_src
 
-HACK: Autostart all scratchpads (but the one for mail) using simulated keypresses, once ~qtile~ has completed its startup.
+HACK: Autostart most scratchpads using simulated keypresses, once ~qtile~ has completed its startup.
 From https://www.reddit.com/r/qtile/comments/v4003j/comment/ib1v0pg
 #+begin_src python
 @hook.subscribe.startup_complete
 def autostart_scratchpads():
     for scratchpad in scratchpads:
-        if scratchpad["key"] in ["m"]:
+        # skip nixos rebuild for obvious reasons
+        # and mail, as it will require the unlocking of my password manager
+        if scratchpad["key"] in ["m", "r"]:
             continue
 
         qtile.cmd_simulate_keypress(["mod1", "mod4"], scratchpad["key"])
@@ -962,6 +969,7 @@ def autostart():
                     f"{HOME}/Pictures/Wallpaper/normal.png",
                 ],
                 ["element-desktop"],
+                ["discord"],
             ]
         )
 
