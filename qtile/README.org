@@ -302,7 +302,7 @@ keys.extend(
             lazy.spawn(my_term),
             desc="Terminal"),
         Key([mod], "a",
-            lazy.spawn("emacsclient -c -a 'emacs'"),
+            lazy.spawn("emacsclient -c -a 'emacs' --eval '(org-agenda-list)'"),
             desc="Launch Emacs"),
         Key([mod], "b",
             lazy.spawn(my_browser),
