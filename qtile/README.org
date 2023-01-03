@@ -27,7 +27,6 @@
 - [[#drag-floating-windows][Drag floating windows]]
 - [[#floating-windows][Floating windows]]
 - [[#startup-applications][Startup applications]]
-  - [[#startup-script-x11][Startup Script X11]]
   - [[#startup-script-wayland][Startup Script Wayland]]
 
 * Imports
@@ -943,7 +942,6 @@ def autostart():
     if qtile.core.name == "x11":
         applications.extend(
             [
-                # [f"{HOME}/.config/scripts/qtile/autorandr_cycle.fish"],
                 [
                     "feh",
                     "--bg-fill",
@@ -973,49 +971,6 @@ def autostart():
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
 #+END_SRC
-
-#+begin_src python :tangle no
-import subprocess
-import os
-
-HOME = os.path.expanduser('~')
-
-applications = [
-    # [f"{HOME}/.config/scripts/qtile/autorandr_cycle.fish"],
-    [
-        "feh",
-        "--bg-fill",
-        f"{HOME}/Pictures/Wallpaper/ultrawide.jpg",
-        "--bg-fill",
-        f"{HOME}/Pictures/Wallpaper/normal.png",
-    ],
-    ["element-desktop"],
-]
-
-for application in applications:
-    subprocess.Popen(application)
-#+end_src
-
-#+RESULTS:
-
-** Startup Script X11
-:PROPERTIES:
-:header-args: :tangle autostart_x11.sh :shebang #!/usr/bin/env bash
-:END:
-
-Background Services
-#+begin_src bash
-fish ~/.config/qtile/scripts/autorandr_cycle.fish
-# clipboard
-clipit &
-#+END_SRC
-
-Applications
-#+BEGIN_SRC bash
-element-desktop &
-emacsclient -ca "emacs" -e "(org-agenda-list)" &
-feh --bg-fill ~/Pictures/Wallpaper/ultrawide.jpg --bg-fill ~/Pictures/Wallpaper/normal.png
-#+end_src
 
 ** Startup Script Wayland
 :PROPERTIES:

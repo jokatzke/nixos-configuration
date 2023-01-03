@@ -742,7 +742,6 @@ def autostart():
     if qtile.core.name == "x11":
         applications.extend(
             [
-                # [f"{HOME}/.config/scripts/qtile/autorandr_cycle.fish"],
                 [
                     "feh",
                     "--bg-fill",
