@@ -439,6 +439,18 @@ scratchpads.append(
 )
 #+end_src
 
+HACK: Autostart all scratchpads (but the one for mail) using simulated keypresses, once ~qtile~ has completed its startup.
+From https://www.reddit.com/r/qtile/comments/v4003j/comment/ib1v0pg
+#+begin_src python
+@hook.subscribe.startup_complete
+def autostart_scratchpads():
+    for scratchpad in scratchpads:
+        if scratchpad["key"] in ["m"]:
+            continue
+
+        qtile.cmd_simulate_keypress(["mod1", "mod4"], scratchpad["key"])
+#+end_src
+
 ** Technicalities (Putting Everything Together)
 :PROPERTIES:
 :ID:       60750bf9-47fc-4a20-bfb6-b198ecb6c66f

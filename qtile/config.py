@@ -297,6 +297,14 @@ scratchpads.append(
     }
 )
 
+@hook.subscribe.startup_complete
+def autostart_scratchpads():
+    for scratchpad in scratchpads:
+        if scratchpad["key"] in ["m"]:
+            continue
+
+        qtile.cmd_simulate_keypress(["mod1", "mod4"], scratchpad["key"])
+
 def get_name(key: str, cmd: str) -> str:
     return f"{cmd}+{key} scratchpad"
 
