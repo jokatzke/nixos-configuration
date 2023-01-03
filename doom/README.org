@@ -1,6 +1,38 @@
 #+TITLE: Doom-Configuration
 #+auto_tangle: t
 
+* Table of Contents :toc:
+- [[#modules][Modules]]
+  - [[#input][Input]]
+  - [[#completion][Completion]]
+  - [[#ui][UI]]
+  - [[#editor][Editor]]
+  - [[#emacs][Emacs]]
+  - [[#terminal][Terminal]]
+  - [[#checkers][Checkers]]
+  - [[#tools][Tools]]
+  - [[#os][OS]]
+  - [[#languages][Languages]]
+  - [[#email-clients][Email Clients]]
+  - [[#app][App]]
+  - [[#config][Config]]
+- [[#user-configuration][User Configuration]]
+  - [[#general-configuration][General Configuration]]
+  - [[#theme][Theme]]
+  - [[#writing][Writing]]
+  - [[#general-file-editing][General File Editing]]
+  - [[#evil][Evil]]
+  - [[#file-management-dired][File Management (dired)]]
+  - [[#languages-1][Languages]]
+  - [[#bibliography][Bibliography]]
+  - [[#reading-pdf-files][Reading PDF-Files]]
+  - [[#org-mode][Org-Mode]]
+  - [[#emacs-calc][Emacs Calc]]
+  - [[#email][Email]]
+  - [[#rss][RSS]]
+- [[#packages][Packages]]
+  - [[#notes][Notes]]
+
 * Modules
 :PROPERTIES:
 :header-args: :results none :tangle init.el

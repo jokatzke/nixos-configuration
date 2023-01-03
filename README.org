@@ -10,6 +10,33 @@ Note that I am by no means an expert on the ~nix~ ecosystem, so the architecture
 
 While almost the entirety of the source code blocks gets exported to the ~nix~ file =/etc/nixos/configuration.nix=, we can leverage the power of literate programming to write e.g. ~bash~ with all expected editing features in Emacs and then simply export them as block-comment to this file.
 
+* Table of Contents :toc:
+- [[#hardware-configuration][Hardware Configuration]]
+- [[#flake][Flake]]
+- [[#nixos-system-configuration][NixOS System Configuration]]
+  - [[#general-options][General Options]]
+  - [[#boot][Boot]]
+  - [[#networking][Networking]]
+  - [[#locale-settings][Locale Settings]]
+  - [[#x-server-de-window-manager-login-manager-keyboard-layout][X Server (DE, Window Manager, Login Manager, Keyboard Layout)]]
+  - [[#gnome][Gnome]]
+  - [[#fonts][Fonts]]
+  - [[#storage-optimization][Storage Optimization]]
+  - [[#file-system][File System]]
+  - [[#graphics-card--gaming][Graphics Card & Gaming]]
+  - [[#syncthing][Syncthing]]
+  - [[#udev-rules][Udev Rules]]
+  - [[#other-services--applications][Other Services & Applications]]
+  - [[#user-accounts][User Accounts]]
+  - [[#close-system-configuration][Close System Configuration]]
+- [[#home-manager][Home Manager]]
+  - [[#basic-information][Basic Information]]
+  - [[#session-variables][Session Variables]]
+  - [[#linked-directories][Linked Directories]]
+  - [[#configured-packages-dotfiles][Configured Packages (Dotfiles)]]
+  - [[#unconfigured-packages][Unconfigured Packages]]
+  - [[#close-home-manager-context][Close Home Manager Context]]
+
 * Hardware Configuration
 
 Since the hardware configuration in NixOS is generated automatically, it is not included here.
@@ -19,7 +46,6 @@ sudo nixos-generate-config
 #+end_src
 IMPORTANT: This overrides =/etc/nixos/configuration.nix=, which is the primary configuration file for NixOS!
 Make sure to not have any edits in your current version of this file that are not present here as well.
-
 
 * Flake
 :PROPERTIES:
@@ -66,7 +92,6 @@ Make sure to not have any edits in your current version of this file that are no
     };
 }
 #+end_src
-
 
 * NixOS System Configuration
 :PROPERTIES:
@@ -539,7 +564,6 @@ users.users.${user} = {
 #+begin_src nix
 }
 #+end_src
-
 
 * Home Manager
 :PROPERTIES:
