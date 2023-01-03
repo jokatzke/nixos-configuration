@@ -563,6 +563,16 @@ are exported to a filename derived from the headline text."
     (org-agenda-list)
     (get-buffer "*Org Agenda*")))
 
+(use-package! org-caldav
+  :after org
+  :config
+  (setq! org-caldav-url "http://192.168.178.74:18080/remote.php/dav/calendars/joopitz"
+         org-caldav-calendar-id "jonas-tasks"
+         org-caldav-inbox "~/gtd/tickler.org"
+         org-icalendar-timezone "Europe/Berlin"
+         )
+  )
+
 (use-package org-fc
   :after org
   :custom

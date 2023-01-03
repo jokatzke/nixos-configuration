@@ -1176,6 +1176,19 @@ Taken from https://stackoverflow.com/a/32467530/17299719
     (get-buffer "*Org Agenda*")))
 #+end_src
 
+Sync ~org-agenda~ with ~Nextcloud~ using the ~CalDav~ protocol.
+#+begin_src elisp
+(use-package! org-caldav
+  :after org
+  :config
+  (setq! org-caldav-url "http://192.168.178.74:18080/remote.php/dav/calendars/joopitz"
+         org-caldav-calendar-id "jonas-tasks"
+         org-caldav-inbox "~/gtd/tickler.org"
+         org-icalendar-timezone "Europe/Berlin"
+         )
+  )
+#+end_src
+
 *** Flashcards / Spaced Repetition
 
 While there are multiple solutions for implementing spaced repetition inside of org-mode, I am choosing to go with [[id:0be292d4-0e6b-4c65-83b4-383f08710b73][org-fc]],
@@ -1289,6 +1302,7 @@ Create a key bind for elfeed
 :PROPERTIES:
 :header-args: :results none :tangle packages.el
 :VISIBILITY: folded
+:ID:       2e55cfa6-bd05-44d9-9439-e26fb39d1329
 :END:
 This is the usage of additional packages is declared.
 In order to use a package, it must first be added here.
@@ -1346,6 +1360,11 @@ Use [[id:41d896e4-12f0-46e0-9f19-96373229f371][org-roam-ui]] and unpin [[id:795e
 #+begin_src elisp
 (package! org-fc
   :recipe (:host github :repo "l3kn/org-fc" :files (:defaults "awk" "demo.org")))
+#+end_src
+
+[[id:d55db4dd-1148-4f39-94ae-ac09ce4d0027][org-caldav]]
+#+begin_src elisp
+(package! org-caldav)
 #+end_src
 
 ** Notes
