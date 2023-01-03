@@ -268,7 +268,7 @@ scratchpads.append({"key": "Return", "cmd": my_term})
 
 scratchpads.extend(
     [
-        {"key": key, "cmd": f"{my_term} -e emacsclient -ct {file}", "opacity": 1.0}
+        {"key": key, "cmd": f"emacs {file}", "opacity": 1.0}
         for key, file in [
             ("i", "~/gtd/inbox.org"),
             ("g", "~/gtd/gtd.org"),
@@ -279,7 +279,7 @@ scratchpads.extend(
 
 scratchpads.extend(
     [
-        {"key": key, "cmd": f'{my_term} -e emacsclient -cte "{cmd}"', "opacity": 0.9}
+        {"key": key, "cmd": f'emacs --eval "{cmd}"', "opacity": 0.9}
         for key, cmd in [("c", "(full-calc)"), ("m", "(mu4e)"), ("a", "(org-agenda)")]
     ]
 )

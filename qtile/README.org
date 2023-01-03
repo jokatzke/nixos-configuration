@@ -403,7 +403,7 @@ Add GTD related scratchpads, using Emacs running inside of a terminal.
 #+begin_src python
 scratchpads.extend(
     [
-        {"key": key, "cmd": f"{my_term} -e emacsclient -ct {file}", "opacity": 1.0}
+        {"key": key, "cmd": f"emacs {file}", "opacity": 1.0}
         for key, file in [
             ("i", "~/gtd/inbox.org"),
             ("g", "~/gtd/gtd.org"),
@@ -417,7 +417,7 @@ Add a calculator, mail, and calendar scratchpad (each in Emacs).
 #+begin_src python
 scratchpads.extend(
     [
-        {"key": key, "cmd": f'{my_term} -e emacsclient -cte "{cmd}"', "opacity": 0.9}
+        {"key": key, "cmd": f'emacs --eval "{cmd}"', "opacity": 0.9}
         for key, cmd in [("c", "(full-calc)"), ("m", "(mu4e)"), ("a", "(org-agenda)")]
     ]
 )
