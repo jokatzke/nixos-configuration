@@ -2,6 +2,7 @@ import os
 import re
 import socket
 import subprocess
+import time
 from libqtile import qtile
 from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
@@ -301,6 +302,7 @@ scratchpads.append(
 
 @hook.subscribe.startup_complete
 def autostart_scratchpads():
+    time.sleep(5)
     for scratchpad in scratchpads:
         # skip nixos rebuild for obvious reasons
         # and mail, as it will require the unlocking of my password manager

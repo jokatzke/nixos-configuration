@@ -37,6 +37,7 @@ import os
 import re
 import socket
 import subprocess
+import asyncio
 from libqtile import qtile
 from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
@@ -448,7 +449,9 @@ HACK: Autostart most scratchpads using simulated keypresses, once ~qtile~ has co
 From https://www.reddit.com/r/qtile/comments/v4003j/comment/ib1v0pg
 #+begin_src python
 @hook.subscribe.startup_complete
-def autostart_scratchpads():
+async def autostart_scratchpads():
+    await asyncio.sleep(2)
+
     for scratchpad in scratchpads:
         # skip nixos rebuild for obvious reasons
         # and mail, as it will require the unlocking of my password manager
