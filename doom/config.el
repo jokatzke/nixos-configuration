@@ -565,6 +565,11 @@ are exported to a filename derived from the headline text."
          org-caldav-calendar-id "jonas-tasks"
          org-caldav-inbox "~/gtd/tickler.org"
          org-icalendar-timezone "Europe/Berlin"
+         org-icalendar-include-todo 'all
+         org-caldav-sync-todo t
+         org-caldav-todo-deadline-schedule-warning-days t
+         org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
+         org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo)
          )
   )
 
