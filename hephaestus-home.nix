@@ -23,6 +23,10 @@ xdg.configFile."scripts" = {
   recursive = true;
 };
 
+home.file.".authinfo.gpg" = {
+  source = ./.secrets/.authinfo.gpg;
+};
+
 programs.alacritty = {
   enable = true;
   settings = {

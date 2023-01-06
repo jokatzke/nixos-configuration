@@ -32,7 +32,7 @@ While almost the entirety of the source code blocks gets exported to the ~nix~ f
 - [[#home-manager][Home Manager]]
   - [[#basic-information][Basic Information]]
   - [[#session-variables][Session Variables]]
-  - [[#linked-directories][Linked Directories]]
+  - [[#linked-directories--files][Linked Directories / Files]]
   - [[#configured-packages-dotfiles][Configured Packages (Dotfiles)]]
   - [[#unconfigured-packages][Unconfigured Packages]]
   - [[#close-home-manager-context][Close Home Manager Context]]
@@ -608,12 +608,21 @@ home = {
 };
 #+end_src
 
-** Linked Directories
-Link directories that are not directly related to the configuration of packages (those are linked in [[*Configured Packages (Dotfiles)][Configured Packages]])
+** Linked Directories / Files
+Link directories that are not directly related to the configuration of packages (those are linked in [[*Configured Packages (Dotfiles)][Configured Packages]]).
+
+This folder includes any scripts, to be used stand-alone or in applications, such as [[Qtile]].
 #+begin_src nix
 xdg.configFile."scripts" = {
   source = ./scripts;
   recursive = true;
+};
+#+end_src
+
+Link the secret (and encrypted) [[file:.secrets/.authinfo.gpg][.authinfo.gpg]] file, which stores logins that [[id:6288c98c-cef6-42a1-ac0c-96952ad5a385][Doom-Emacs]] shall remember.
+#+begin_src nix
+home.file.".authinfo.gpg" = {
+  source = ./.secrets/.authinfo.gpg;
 };
 #+end_src
 
@@ -927,6 +936,9 @@ programs.direnv = {
 #+end_src
 
 *** Doom-Emacs
+:PROPERTIES:
+:ID:       6288c98c-cef6-42a1-ac0c-96952ad5a385
+:END:
 Doom-Emacs is a configuration framework for Emacs, a highly extensible +operating system+ text editor.
 
 **** Installation
