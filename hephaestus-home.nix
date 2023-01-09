@@ -670,6 +670,8 @@ home.packages = [
   pkgs.hunspellDicts.de_DE
   pkgs.hunspellDicts.en_US
   pkgs.vale
+  # for org-media-notes
+  pkgs.mpv
   pkgs.feh
   pkgs.freshfetch
   pkgs.rofi

@@ -1,7 +1,11 @@
 #+TITLE: Doom-Configuration
 #+auto_tangle: t
+#+STARTUP: overview
 
 * Table of Contents :toc:
+:PROPERTIES:
+:VISIBILITY: all
+:END:
 - [[#modules][Modules]]
   - [[#input][Input]]
   - [[#completion][Completion]]
@@ -945,7 +949,7 @@ Add some keybinds to org-mode for literate programming using [[id:c9383453-3344-
   )
 #+end_src
 
-*** Org-Roam
+*** Note Taking (Org-Roam)
 
 Set the directory of the org-roam notes
 #+BEGIN_SRC elisp
@@ -1000,6 +1004,17 @@ Use [[id:41d896e4-12f0-46e0-9f19-96373229f371][org-roam-ui]] for a nicer visuali
   :init
   (map! :map doom-leader-notes-map
         :desc "Show Graph" "r g" #'org-roam-ui-mode)
+  )
+#+end_src
+
+Configure [[id:31f1301d-a796-407d-b359-e8fff85d0ca5][org-media-note]], a package for taking notes on video and audio content.
+#+begin_src elisp
+(use-package! org-media-note
+  :hook (org-mode .  org-media-note-mode)
+  :bind (
+         ("H-v" . org-media-note-hydra/body))  ;; Main entrance
+  :config
+  (setq org-media-note-screenshot-image-dir "~/org-roam/.images/")  ;; Folder to save screenshot
   )
 #+end_src
 
@@ -1391,6 +1406,12 @@ Use [[id:41d896e4-12f0-46e0-9f19-96373229f371][org-roam-ui]] and unpin [[id:795e
 [[id:d55db4dd-1148-4f39-94ae-ac09ce4d0027][org-caldav]]
 #+begin_src elisp
 (package! org-caldav)
+#+end_src
+
+[[id:31f1301d-a796-407d-b359-e8fff85d0ca5][org-media-note]]
+#+begin_src elisp
+(package! pretty-hydra)  ;; dependency
+(package! org-media-note :recipe (:host github :repo "yuchen-lea/org-media-note"))
 #+end_src
 
 ** Notes

@@ -426,6 +426,14 @@ to manually add one myself."
         :desc "Show Graph" "r g" #'org-roam-ui-mode)
   )
 
+(use-package! org-media-note
+  :hook (org-mode .  org-media-note-mode)
+  :bind (
+         ("H-v" . org-media-note-hydra/body))  ;; Main entrance
+  :config
+  (setq org-media-note-screenshot-image-dir "~/org-roam/.images/")  ;; Folder to save screenshot
+  )
+
 (solaire-global-mode -1)
 
 (with-eval-after-load 'ox-latex

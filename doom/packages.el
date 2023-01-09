@@ -25,3 +25,6 @@
   :recipe (:host github :repo "l3kn/org-fc" :files (:defaults "awk" "demo.org")))
 
 (package! org-caldav)
+
+(package! pretty-hydra)  ;; dependency
+(package! org-media-note :recipe (:host github :repo "yuchen-lea/org-media-note"))
