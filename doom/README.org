@@ -300,7 +300,6 @@ for you to customize it yourself. It is best to load these last.
 ) ;; close the doom!-function
 #+end_src
 
-
 * User Configuration
 :PROPERTIES:
 :header-args: :results none :tangle config.el
@@ -1324,7 +1323,6 @@ Create a key bind for elfeed
 (map! :leader
       (:desc "RSS Feed" "o f" #'elfeed))
 #+end_src
-
 
 * Packages
 :PROPERTIES:

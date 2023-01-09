@@ -1,7 +1,7 @@
 #+TITLE: Literate NixOS System Configuration
-#+options: toc:2
+#+options: toc:3
 #+auto_tangle: t
-#+STARTUP: show2levels
+#+STARTUP: overview
 
 This is my attempt to unify my entire system configuration into one place.
 Ideally, this should result in a fully set up system (modulo data) according to my preferences.
@@ -11,6 +11,9 @@ Note that I am by no means an expert on the ~nix~ ecosystem, so the architecture
 While almost the entirety of the source code blocks gets exported to the ~nix~ file =/etc/nixos/configuration.nix=, we can leverage the power of literate programming to write e.g. ~bash~ with all expected editing features in Emacs and then simply export them as block-comment to this file.
 
 * Table of Contents :toc:
+:PROPERTIES:
+:VISIBILITY: all
+:END:
 - [[#hardware-configuration][Hardware Configuration]]
 - [[#flake][Flake]]
 - [[#nixos-system-configuration][NixOS System Configuration]]
