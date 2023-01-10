@@ -36,6 +36,7 @@ While almost the entirety of the source code blocks gets exported to the ~nix~ f
   - [[#basic-information][Basic Information]]
   - [[#session-variables][Session Variables]]
   - [[#linked-directories--files][Linked Directories / Files]]
+  - [[#xdf-mime-applications][XDF MIME Applications]]
   - [[#configured-packages-dotfiles][Configured Packages (Dotfiles)]]
   - [[#unconfigured-packages][Unconfigured Packages]]
   - [[#close-home-manager-context][Close Home Manager Context]]
@@ -277,7 +278,7 @@ services.xserver = {
   # Enable Desktop Environment
   desktopManager = {
     gnome.enable = false;
-    plasma5.enable = true;
+    plasma5.enable = false;
   };
   # Enable Window Managers
   windowManager = {
@@ -289,6 +290,9 @@ services.xserver = {
       enable = true;
     };
     defaultSession = "none+qtile";
+    autoLogin = {
+      user = "${user}";
+    };
   };
   # Set the X11 keyboard layout.
   # I use the international version of the US layout for my lily58.
@@ -526,7 +530,7 @@ This also requires enabling XDG Desktop Portals.
 services.flatpak.enable = true;
 xdg.portal = {
   enable = true;
-  # extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 };
 #+end_src
 
@@ -626,6 +630,34 @@ Link the secret (and encrypted) [[file:.secrets/.authinfo.gpg][.authinfo.gpg]] f
 #+begin_src nix
 home.file.".authinfo.gpg" = {
   source = ./.secrets/.authinfo.gpg;
+};
+#+end_src
+** XDF MIME Applications
+
+#+begin_src nix
+xdg.mimeApps = {
+  enable = true;
+  associations = {
+    added = {
+      "application/pdf"="okularApplication_pdf.desktop";
+      "application/xhtml+xml" = "firefox.desktop";
+      "inode/directory" = "pcmanfm.desktop";
+      "text/plain" = "emacsclient.desktop";
+      "x-scheme-handler/mailto" = "thunderbird.desktop";
+      "x-scheme-handler/mid" = "thunderbird.desktop";
+    };
+  };
+  defaultApplications = {
+    "application/pdf"="okularApplication_pdf.desktop";
+    "application/xhtml+xml"="firefox.desktop";
+    "application/zip"="pcmanfm.desktop";
+    "inode/directory"="pcmanfm.desktop";
+    "message/rfc822"="thunderbird.desktop";
+    "x-scheme-handler/discord-712465656758665259"="discord.desktop";
+    "x-scheme-handler/mailto"="thunderbird.desktop";
+    "x-scheme-handler/mid"="thunderbird.desktop";
+    "x-scheme-handler/msteams"="teams-for-linux.desktop";
+  };
 };
 #+end_src
 
@@ -1430,6 +1462,8 @@ home.packages = [
 #+begin_src nix
 pkgs.libreoffice-fresh
 
+pkgs.pcmanfm
+
 pkgs.thunderbird
 pkgs.mattermost-desktop
 pkgs.element-desktop
@@ -1459,9 +1493,9 @@ pkgs.transgui
 **** CLI Tools
 Controlling media / volume
 #+begin_src nix
-  pkgs.playerctl
-  pkgs.pamixer
-  pkgs.pavucontrol
+pkgs.playerctl
+pkgs.pamixer
+pkgs.pavucontrol
 #+end_src
 
 A prettier replacement for ~ls~

@@ -27,6 +27,31 @@ home.file.".authinfo.gpg" = {
   source = ./.secrets/.authinfo.gpg;
 };
 
+xdg.mimeApps = {
+  enable = true;
+  associations = {
+    added = {
+      "application/pdf"="okularApplication_pdf.desktop";
+      "application/xhtml+xml" = "firefox.desktop";
+      "inode/directory" = "pcmanfm.desktop";
+      "text/plain" = "emacsclient.desktop";
+      "x-scheme-handler/mailto" = "thunderbird.desktop";
+      "x-scheme-handler/mid" = "thunderbird.desktop";
+    };
+  };
+  defaultApplications = {
+    "application/pdf"="okularApplication_pdf.desktop";
+    "application/xhtml+xml"="firefox.desktop";
+    "application/zip"="pcmanfm.desktop";
+    "inode/directory"="pcmanfm.desktop";
+    "message/rfc822"="thunderbird.desktop";
+    "x-scheme-handler/discord-712465656758665259"="discord.desktop";
+    "x-scheme-handler/mailto"="thunderbird.desktop";
+    "x-scheme-handler/mid"="thunderbird.desktop";
+    "x-scheme-handler/msteams"="teams-for-linux.desktop";
+  };
+};
+
 programs.alacritty = {
   enable = true;
   settings = {
@@ -601,6 +626,8 @@ programs.zoxide = {
 nixpkgs.config.allowUnfree = true;
 home.packages = [
   pkgs.libreoffice-fresh
+  
+  pkgs.pcmanfm
   
   pkgs.thunderbird
   pkgs.mattermost-desktop

@@ -120,7 +120,7 @@ services.xserver = {
   # Enable Desktop Environment
   desktopManager = {
     gnome.enable = false;
-    plasma5.enable = true;
+    plasma5.enable = false;
   };
   # Enable Window Managers
   windowManager = {
@@ -132,6 +132,9 @@ services.xserver = {
       enable = true;
     };
     defaultSession = "none+qtile";
+    autoLogin = {
+      user = "${user}";
+    };
   };
   # Set the X11 keyboard layout.
   # I use the international version of the US layout for my lily58.
@@ -250,7 +253,7 @@ programs.fish.enable = true;
 services.flatpak.enable = true;
 xdg.portal = {
   enable = true;
-  # extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 };
 
 virtualisation.docker.enable = true;
