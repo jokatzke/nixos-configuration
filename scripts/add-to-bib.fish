@@ -21,6 +21,8 @@ function main
     end
 
     # # Construct id from url
+    # remove trailing forward-slash, if it exists
+    set url (echo $url | sed -e "s/\/\$//")
     # set the id to the bottom-level domain, replacing colons with dots
     set id (echo $url | sed -e "s/.*\/\([^\/]*\)\$/\1/" | sed -e "s/:/./g")
     # set the site to the top-level domain, replacing colons with dots
