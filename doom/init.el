@@ -35,12 +35,12 @@ ophints           ; highlight the region an operation acts on
 vc-gutter         ; vcs diff in the fringe
 vi-tilde-fringe   ; fringe tildes to mark beyond EOB
 ;;window-select     ; visually switch windows
-workspaces        ; tab emulation, persistence & separate workspaces
+;;workspaces        ; tab emulation, persistence & separate workspaces
 zen               ; distraction-free coding or writing
 
 :editor
 (evil +everywhere); come to the dark side, we have cookies
-;; file-templates    ; auto-snippets for empty files
+file-templates    ; auto-snippets for empty files
 fold              ; (nigh) universal code folding
 (format +onsave)  ; automated prettiness
 ;;god               ; run Emacs commands without modifier keys
@@ -77,7 +77,7 @@ biblio            ; Writes a PhD for you (citation needed)
 direnv
 ;;docker
 ;;editorconfig      ; let someone else argue about tabs vs spaces
-ein               ; tame Jupyter notebooks with emacs
+;;ein               ; tame Jupyter notebooks with emacs
 (eval +overlay)     ; run code, run (also, repls)
 ;;gist              ; interacting with github gists
 (lookup +dictionary +offline)              ; navigate your code and its documentation

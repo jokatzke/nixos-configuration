@@ -396,7 +396,7 @@ to manually add one myself."
           "%?"
           :if-new (file+head
                    "default/${slug}.org" ;; file-name
-                   "#+title: ${title}\n#+filetags: Knowledge\n\n" ;; meta-data
+                   "#+title: ${title}\n#+filetags:\n\n" ;; meta-data
                    )
           :unnarrowed t
           )
@@ -405,7 +405,7 @@ to manually add one myself."
           (file "~/org-roam/functionality/templates/functionality_template.org")
           :if-new (file+head
                    "functionality/${slug}.org" ;; file-name
-                   "#+title: ${title}\n#+filetags: Functionality\n\n" ;; meta-data
+                   "#+title: ${title}\n#+filetags:\n\n" ;; meta-data
                    )
           :unnarrowed t
           )
