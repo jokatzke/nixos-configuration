@@ -405,6 +405,11 @@ A scratchpad that rebuilds ~NixOS~ using the current configuration.
 scratchpads.append({"key": "r", "cmd": f"{my_term} -e sudo nixos-rebuild switch"})
 #+end_src
 
+A scratchpad for controlling audio devices using ~pavucontrol~
+#+begin_src python
+scratchpads.append({"key": "v", "cmd": "pavucontrol"})
+#+end_src
+
 Add GTD related scratchpads, using Emacs running inside of a terminal.
 #+begin_src python
 scratchpads.extend(

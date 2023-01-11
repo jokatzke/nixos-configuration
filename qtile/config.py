@@ -2,7 +2,7 @@ import os
 import re
 import socket
 import subprocess
-import time
+import asyncio
 from libqtile import qtile
 from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
@@ -269,6 +269,8 @@ scratchpads.append({"key": "Return", "cmd": my_term})
 
 scratchpads.append({"key": "r", "cmd": f"{my_term} -e sudo nixos-rebuild switch"})
 
+scratchpads.append({"key": "v", "cmd": "pavucontrol"})
+
 scratchpads.extend(
     [
         {"key": key, "cmd": f"emacs {file}", "opacity": 1.0}
@@ -301,8 +303,9 @@ scratchpads.append(
 )
 
 @hook.subscribe.startup_complete
-def autostart_scratchpads():
-    time.sleep(5)
+async def autostart_scratchpads():
+    await asyncio.sleep(2)
+
     for scratchpad in scratchpads:
         # skip nixos rebuild for obvious reasons
         # and mail, as it will require the unlocking of my password manager
