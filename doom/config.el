@@ -33,18 +33,17 @@
 
 (after! doom-modeline
   (setq doom-modeline-enable-word-count t
-        doom-modeline-header-line nil
-        ;; doom-modeline-hud nil
+        doom-modeline-major-mode-icon t
+        doom-modeline-indent-info nil
+
         doom-themes-padded-modeline t
-        doom-flatwhite-brighter-modeline nil
-        doom-plain-brighter-modeline nil
         ))
-(add-hook! 'doom-modeline-mode-hook
-  (progn
-    (set-face-attribute 'header-line nil
-                        :background (face-background 'mode-line)
-                        :foreground (face-foreground 'mode-line))
-    ))
+;; (add-hook! 'doom-modeline-mode-hook
+;;   (progn
+;;     (set-face-attribute 'header-line nil
+;;                         :background (face-background 'mode-line)
+;;                         :foreground (face-foreground 'mode-line))
+;;     ))
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
@@ -95,6 +94,29 @@
   )
 
 (map! :desc "company-complete" "C-SPC" #'+company-complete)
+
+(use-package! prescient
+  :config
+  (prescient-persist-mode 1)
+  (setq! prescient-history-length 100
+         prescient-frequency-decay 0.997
+         prescient-frequency-threshold 0.05)
+  (setq! prescient-filter-method '(literal regexp anchored))
+  (setq! prescient-sort-full-matches-first t)
+  )
+
+(use-package! company-prescient
+  :after company
+  :config
+  (company-prescient-mode 1)
+  (setq! company-prescient-sort-length-enable nil)
+  )
+
+(use-package! vertico-prescient
+  :after vertico
+  :config
+  (vertico-prescient-mode 1)
+  )
 
 (use-package! avy
   :defer t

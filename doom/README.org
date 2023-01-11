@@ -401,18 +401,17 @@ Configure the ~doom-modeline~, e.g. to show word-count
 #+begin_src elisp
 (after! doom-modeline
   (setq doom-modeline-enable-word-count t
-        doom-modeline-header-line nil
-        ;; doom-modeline-hud nil
+        doom-modeline-major-mode-icon t
+        doom-modeline-indent-info nil
+
         doom-themes-padded-modeline t
-        doom-flatwhite-brighter-modeline nil
-        doom-plain-brighter-modeline nil
         ))
-(add-hook! 'doom-modeline-mode-hook
-  (progn
-    (set-face-attribute 'header-line nil
-                        :background (face-background 'mode-line)
-                        :foreground (face-foreground 'mode-line))
-    ))
+;; (add-hook! 'doom-modeline-mode-hook
+;;   (progn
+;;     (set-face-attribute 'header-line nil
+;;                         :background (face-background 'mode-line)
+;;                         :foreground (face-foreground 'mode-line))
+;;     ))
 #+end_src
 
 ** Writing
@@ -478,6 +477,9 @@ Currently, this is only enabled for [[id:a6b90489-9128-4815-aa5f-4bbf2dc1ada6][o
 #+end_src
 
 *** Auto-Completion
+:PROPERTIES:
+:ID:       3aa8d99c-36ff-4150-8740-05149b818d38
+:END:
 
 Add key-binds for [[id:92961394-1c71-4e72-a017-4cf9f1078309][yas]]
 #+begin_src elisp
@@ -494,6 +496,47 @@ Add key-binds for [[id:92961394-1c71-4e72-a017-4cf9f1078309][yas]]
 Map [[id:af3a8b90-d995-42ce-b1ee-23f35c6ca0f2][company-mode's]] ~company-complete~ to ~C-SPC~
 #+begin_src elisp
 (map! :desc "company-complete" "C-SPC" #'+company-complete)
+#+end_src
+
+**** Prescient.el for Candidate Sorting and Filtering
+:PROPERTIES:
+:ID:       0b3b4505-1ef6-401a-bf5e-4f3d93dc6b2a
+:END:
+[[id:2a2075c0-e7d8-480f-b508-f782c53ca8dc][prescient.el]] is a package that integrates with many completion frameworks, such as [[id:56399475-2c62-4f23-a504-0313f6eb8aa3][vertico]] or [[id:af3a8b90-d995-42ce-b1ee-23f35c6ca0f2][company-mode]],
+providing sorting and filtering capabilities.
+
+Configure ~prescient.el~ itself,
+- making the history persistent
+- setting its parameters that are used to calculate the sorting behavior
+- defining the filtering behavior for candidates
+- sorting full matches before partial ones
+#+begin_src elisp
+(use-package! prescient
+  :config
+  (prescient-persist-mode 1)
+  (setq! prescient-history-length 100
+         prescient-frequency-decay 0.997
+         prescient-frequency-threshold 0.05)
+  (setq! prescient-filter-method '(literal regexp anchored))
+  (setq! prescient-sort-full-matches-first t)
+  )
+#+end_src
+
+#+begin_src elisp
+(use-package! company-prescient
+  :after company
+  :config
+  (company-prescient-mode 1)
+  (setq! company-prescient-sort-length-enable nil)
+  )
+#+end_src
+
+#+begin_src elisp
+(use-package! vertico-prescient
+  :after vertico
+  :config
+  (vertico-prescient-mode 1)
+  )
 #+end_src
 
 *** Navigation
@@ -1412,6 +1455,12 @@ Use [[id:41d896e4-12f0-46e0-9f19-96373229f371][org-roam-ui]] and unpin [[id:795e
 #+begin_src elisp
 (package! pretty-hydra)  ;; dependency
 (package! org-media-note :recipe (:host github :repo "yuchen-lea/org-media-note"))
+#+end_src
+
+[[id:2a2075c0-e7d8-480f-b508-f782c53ca8dc][prescient.el]] for [[id:af3a8b90-d995-42ce-b1ee-23f35c6ca0f2][company-mode]] and [[id:56399475-2c62-4f23-a504-0313f6eb8aa3][vertico]]
+#+begin_src elisp
+(package! company-prescient)
+(package! vertico-prescient)
 #+end_src
 
 ** Notes

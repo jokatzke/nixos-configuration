@@ -28,3 +28,6 @@
 
 (package! pretty-hydra)  ;; dependency
 (package! org-media-note :recipe (:host github :repo "yuchen-lea/org-media-note"))
+
+(package! company-prescient)
+(package! vertico-prescient)
