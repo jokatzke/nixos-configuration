@@ -451,12 +451,13 @@ scratchpads.append(
 #+end_src
 
 HACK: Autostart most scratchpads using simulated keypresses, once ~qtile~ has completed its startup.
-From https://www.reddit.com/r/qtile/comments/v4003j/comment/ib1v0pg
+From https://www.reddit.com/r/qtile/comments/v4003j/comment/ib1v0pg, with the modification
+of using the =startup_once= hook instead of =startup_complete=, since
+1. The latter will cause the scratchpads to be opened upon reloading ~qtile~.
+2. ~qtile~ locks up while the scratchpads are being created using the =startup_complete= hook; this is not the case for =startup_complete=.
 #+begin_src python
 @hook.subscribe.startup_once
 async def autostart_scratchpads():
-    await asyncio.sleep(5)
-
     for scratchpad in scratchpads:
         # skip nixos rebuild for obvious reasons
         # and mail, as it will require the unlocking of my password manager
@@ -978,6 +979,7 @@ def autostart():
                 ],
                 ["element-desktop"],
                 ["discord"],
+                ["emacs", "--daemon"],
             ]
         )
 
@@ -997,7 +999,7 @@ def autostart():
 #
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
-wmname = "LG3D"
+# wmname = "LG3D"
 #+END_SRC
 
 ** Startup Script Wayland

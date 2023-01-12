@@ -304,8 +304,6 @@ scratchpads.append(
 
 @hook.subscribe.startup_once
 async def autostart_scratchpads():
-    await asyncio.sleep(5)
-
     for scratchpad in scratchpads:
         # skip nixos rebuild for obvious reasons
         # and mail, as it will require the unlocking of my password manager
@@ -768,6 +766,7 @@ def autostart():
                 ],
                 ["element-desktop"],
                 ["discord"],
+                ["emacs", "--daemon"],
             ]
         )
 
@@ -787,4 +786,4 @@ def autostart():
 #
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
-wmname = "LG3D"
+# wmname = "LG3D"

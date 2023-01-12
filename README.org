@@ -977,26 +977,13 @@ programs.direnv = {
 Doom-Emacs is a configuration framework for Emacs, a highly extensible +operating system+ text editor.
 
 **** Installation
-Install Emacs and run it as a service on startup.
-- The gcc branch converts emacs-lisp into compiled C binaries, hugely improving performance.
-- The pure gtk branch uses, as its name suggests, purely gtk instead of the default, and much older, lucid toolkit.
-  This allows for hardware acceleration and better [[id:6b0d61dd-a425-494c-824c-2ce8cf202d09][Wayland]] integration, but can lead to instabilities, especially when using Emacs as a daemon,
-  which we are also doing here.
 #+name: emacs_install
 #+begin_src nix
 programs.emacs = {
   enable = true;
   package = pkgs.emacs;
-  extraPackages = epkgs: [ epkgs.emacsql-sqlite ];
-};
-services.emacs = {
-  enable = true;
-  package = config.programs.emacs.finalPackage;
-  defaultEditor = true;
 };
 #+end_src
-Running it as a services makes all future instances of Emacs start up immediately when used as clients,
-rather than having to load up all packages every time (which can take multiple seconds).
 
 Note that additionally, Doom-Emacs has to installed into =~/.emacs.d=.
 This can be done by running the script [[reload_doom]].
@@ -1004,7 +991,7 @@ This can be done by running the script [[reload_doom]].
 **** Configuration
 For simplicity, I still configure Doom-Emacs in its own separate literate configuration; see [[file:./doom/README.org]].
 However, I do not store in my dotfiles. Instead, it is at =/etc/nixos/doom=, so that its changes are still controlled by Home Manager.
-The script below, which can be run automatically on file changes within the doom directory, syncs doom configuration changes.
+The script [[reload_doom]] below, which can be run automatically on file changes within the doom directory, syncs doom configuration changes.
 #+begin_src nix
 home.file.".doom.d" = {
   source = ./doom;
@@ -1013,8 +1000,7 @@ home.file.".doom.d" = {
 #+end_src
 
 #+name: reload_doom
-#+begin_src sh :tangle ./scripts/reload_doom.sh
-#!/bin/sh
+#+begin_src sh :tangle ./scripts/reload_doom.sh :shebang "#!/bin/sh"
 DOOM="$HOME/.emacs.d"
 
 if [ ! -d "$DOOM" ]; then
@@ -1024,6 +1010,7 @@ fi
 
 $DOOM/bin/doom sync
 #+end_src
+
 *** Dunst
 [[id:2231a333-9429-4680-bcfa-dc00d4dd46e2][Dunst]] is a lightweight notification daemon.
 #+begin_src nix
@@ -1053,12 +1040,12 @@ services = {
   };
 };
 #+end_src
+
 *** Firefox
 The well-known, open source internet browser.
 #+begin_src nix
 programs.firefox = {
   enable = true;
-  # enableGnomeExtensions = true;
 };
 #+end_src
 

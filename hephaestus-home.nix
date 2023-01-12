@@ -318,12 +318,6 @@ programs.direnv = {
 programs.emacs = {
   enable = true;
   package = pkgs.emacs;
-  extraPackages = epkgs: [ epkgs.emacsql-sqlite ];
-};
-services.emacs = {
-  enable = true;
-  package = config.programs.emacs.finalPackage;
-  defaultEditor = true;
 };
 
 home.file.".doom.d" = {
@@ -355,7 +349,6 @@ services = {
 
 programs.firefox = {
   enable = true;
-  # enableGnomeExtensions = true;
 };
 
 # Configuration of Fish
