@@ -48,7 +48,7 @@ groups = [
         label=",",
         layout="ratiotile",
         matches=[
-            Match(wm_class=["Telegram", "Slack", "Mattermost", "Signal", "Element"]),
+            Match(wm_class=["Telegram", "Slack", "Mattermost", "Signal", "Element", "discord"]),
         ],
     ),
     Group(name=group_keys[1], label="P", layout="monadthreecol"),
@@ -302,9 +302,9 @@ scratchpads.append(
     }
 )
 
-@hook.subscribe.startup_complete
+@hook.subscribe.startup_once
 async def autostart_scratchpads():
-    await asyncio.sleep(2)
+    await asyncio.sleep(5)
 
     for scratchpad in scratchpads:
         # skip nixos rebuild for obvious reasons
