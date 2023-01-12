@@ -103,6 +103,10 @@
          prescient-frequency-threshold 0.05)
   (setq! prescient-filter-method '(literal regexp anchored))
   (setq! prescient-sort-full-matches-first t)
+  (custom-set-faces!
+    '(prescient-primary-highlight       :inherit (outline-4))
+    '(prescient-secondary-highlight     :inherit (outline-1) :underline t)
+    )
   )
 
 (use-package! company-prescient
@@ -646,7 +650,7 @@ are exported to a filename derived from the headline text."
          (:prefix ("f" . "Flashcards")
           :desc "Dashboard"     "d" (lambda () (interactive) (org-fc-dashboard 'all))
           :desc "Review"        "r" #'org-fc-review-all
-          (:prefix ("i" . "Initialize Flashcard")
+          (:prefix ("i" . "Init Flashcard")
            :desc "Normal"        "i" #'org-fc-type-normal-init
            :desc "Normal"        "n" #'org-fc-type-normal-init
            :desc "Cloze"         "c" #'org-fc-type-cloze-init
