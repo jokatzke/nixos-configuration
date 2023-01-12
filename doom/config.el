@@ -641,8 +641,18 @@ are exported to a filename derived from the headline text."
 
   ;; general keys
   (map! :leader
-        (:prefix "o"
-         :desc "Flashcards" "v" #'org-fc-dashboard
+        (:prefix "n"
+         :nv "f" nil
+         (:prefix ("f" . "Flashcards")
+          :desc "Dashboard" "d" (lambda () (interactive) (org-fc-dashboard 'all))
+          (:prefix ("i" . "Initialize Flashcard")
+           :desc "Normal"        "i" #'org-fc-type-normal-init
+           :desc "Normal"        "n" #'org-fc-type-normal-init
+           :desc "Cloze"         "c" #'org-fc-type-cloze-init
+           :desc "Double"        "d" #'org-fc-type-double-init
+           :desc "Text-Input"    "t" #'org-fc-type-text-input-init
+           )
+          )
          )
         )
   )
