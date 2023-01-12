@@ -644,7 +644,8 @@ are exported to a filename derived from the headline text."
         (:prefix "n"
          :nv "f" nil
          (:prefix ("f" . "Flashcards")
-          :desc "Dashboard" "d" (lambda () (interactive) (org-fc-dashboard 'all))
+          :desc "Dashboard"     "d" (lambda () (interactive) (org-fc-dashboard 'all))
+          :desc "Review"        "r" #'org-fc-review-all
           (:prefix ("i" . "Initialize Flashcard")
            :desc "Normal"        "i" #'org-fc-type-normal-init
            :desc "Normal"        "n" #'org-fc-type-normal-init
