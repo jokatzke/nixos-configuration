@@ -1001,6 +1001,7 @@ Add some keybinds to org-mode for literate programming using [[id:c9383453-3344-
 Set the directory of the org-roam notes
 #+BEGIN_SRC elisp
 (setq! org-roam-directory (file-truename "~/org-roam"))
+(setq! org-roam-database-connector 'sqlite3)
 #+end_src
 
 Automatically synchronize the org-roam database
@@ -1012,7 +1013,6 @@ All of the templates to use
 #+BEGIN_SRC elisp
 (setq! org-roam-capture-templates
        '(
-         ;; default notes
          ("d" "default" plain
           "%?"
           :if-new (file+head
@@ -1021,11 +1021,18 @@ All of the templates to use
                    )
           :unnarrowed t
           )
-         ;; template for functionality-related notes. saved in its own subdirectory
          ("f" "functionality" plain
           (file "~/org-roam/functionality/templates/functionality_template.org")
           :if-new (file+head
                    "functionality/${slug}.org" ;; file-name
+                   "#+title: ${title}\n#+filetags:\n\n" ;; meta-data
+                   )
+          :unnarrowed t
+          )
+         ("s" "secret" plain
+          "%?"
+          :if-new (file+head
+                   "secrets/${slug}.org" ;; file-name
                    "#+title: ${title}\n#+filetags:\n\n" ;; meta-data
                    )
           :unnarrowed t
@@ -1042,6 +1049,11 @@ When browsing nodes, show heading-nodes as a hierarchy
      (when (> level 1) (concat (string-join (org-roam-node-olp node) " > ") " > "))
      (org-roam-node-title node))))
 (setq! org-roam-node-display-template "${hierarchy:*} ${tags:20}")
+#+end_src
+
+Do not sort org-roam notes (this is done through [[id:0b3b4505-1ef6-401a-bf5e-4f3d93dc6b2a][prescient.el]])
+#+begin_src elisp
+(setq! org-roam-node-default-sort nil)
 #+end_src
 
 Use [[id:41d896e4-12f0-46e0-9f19-96373229f371][org-roam-ui]] for a nicer visualization of nodes
@@ -1476,6 +1488,10 @@ Use [[id:41d896e4-12f0-46e0-9f19-96373229f371][org-roam-ui]] and unpin [[id:795e
 #+begin_src elisp
 (package! company-prescient)
 (package! vertico-prescient)
+#+end_src
+
+#+begin_src elisp
+(package! emacsql-sqlite3)
 #+end_src
 
 ** Notes

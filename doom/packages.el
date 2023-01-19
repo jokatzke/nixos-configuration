@@ -31,3 +31,5 @@
 
 (package! company-prescient)
 (package! vertico-prescient)
+
+(package! emacsql-sqlite3)

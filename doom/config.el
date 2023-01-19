@@ -412,12 +412,12 @@ to manually add one myself."
   )
 
 (setq! org-roam-directory (file-truename "~/org-roam"))
+(setq! org-roam-database-connector 'sqlite3)
 
 (org-roam-db-autosync-mode)
 
 (setq! org-roam-capture-templates
        '(
-         ;; default notes
          ("d" "default" plain
           "%?"
           :if-new (file+head
@@ -426,11 +426,18 @@ to manually add one myself."
                    )
           :unnarrowed t
           )
-         ;; template for functionality-related notes. saved in its own subdirectory
          ("f" "functionality" plain
           (file "~/org-roam/functionality/templates/functionality_template.org")
           :if-new (file+head
                    "functionality/${slug}.org" ;; file-name
+                   "#+title: ${title}\n#+filetags:\n\n" ;; meta-data
+                   )
+          :unnarrowed t
+          )
+         ("s" "secret" plain
+          "%?"
+          :if-new (file+head
+                   "secrets/${slug}.org" ;; file-name
                    "#+title: ${title}\n#+filetags:\n\n" ;; meta-data
                    )
           :unnarrowed t
@@ -444,6 +451,8 @@ to manually add one myself."
      (when (> level 1) (concat (string-join (org-roam-node-olp node) " > ") " > "))
      (org-roam-node-title node))))
 (setq! org-roam-node-display-template "${hierarchy:*} ${tags:20}")
+
+(setq! org-roam-node-default-sort nil)
 
 (use-package! org-roam-ui
   :after org-roam
