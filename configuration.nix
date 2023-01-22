@@ -161,7 +161,11 @@ nix.settings.auto-optimise-store = true;
 
 system.autoUpgrade = {
   enable = true;
+<<<<<<< HEAD
   flake = "/etc/nixos";
+=======
+  flake = "github:joopitz/nixos-configuration";
+>>>>>>> origin/main
   flags = [ "--update-input" "nixpkgs" "--commit-lock-file" ];
 };
 

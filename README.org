@@ -381,7 +381,11 @@ This is relatively safe to do when using the stable branch of ~NixOS~, since the
 #+begin_src nix
 system.autoUpgrade = {
   enable = true;
+<<<<<<< HEAD
   flake = "/etc/nixos";
+=======
+  flake = "github:joopitz/nixos-configuration";
+>>>>>>> origin/main
   flags = [ "--update-input" "nixpkgs" "--commit-lock-file" ];
 };
 #+end_src
