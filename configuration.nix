@@ -159,6 +159,12 @@ nix.gc = {
 
 nix.settings.auto-optimise-store = true;
 
+system.autoUpgrade = {
+  enable = true;
+  flake = "/etc/nixos";
+  flags = [ "--update-input" "nixpkgs" "--commit-lock-file" ];
+};
+
 boot = {
   tmpOnTmpfs = true;
   tmpOnTmpfsSize = "75%";

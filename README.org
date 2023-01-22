@@ -25,6 +25,7 @@ While almost the entirety of the source code blocks gets exported to the ~nix~ f
   - [[#gnome][Gnome]]
   - [[#fonts][Fonts]]
   - [[#storage-optimization][Storage Optimization]]
+  - [[#automatic-updates][Automatic Updates]]
   - [[#file-system][File System]]
   - [[#graphics-card--gaming][Graphics Card & Gaming]]
   - [[#syncthing][Syncthing]]
@@ -348,7 +349,6 @@ fonts.fonts = with pkgs; [
 #+end_src
 
 ** Storage Optimization
-
 Enable automatic garbage collection.
 This deletes old (as specified in the ~options~ variable) generations
 and then deletes all unused entries in the nix store.
@@ -374,6 +374,17 @@ sudo nix-store --optimize
 #+end_src
 This operation can take a *long* time, depending on the current size of the store
 (took about 22 minutes on my machine, to go from around 155 GB to 115 GB).
+
+** Automatic Updates
+Update the system every week.
+This is relatively safe to do when using the stable branch of ~NixOS~, since there are no feature updates or breaking changes.
+#+begin_src nix
+system.autoUpgrade = {
+  enable = true;
+  flake = "/etc/nixos";
+  flags = [ "--update-input" "nixpkgs" "--commit-lock-file" ];
+};
+#+end_src
 
 ** File System
 
