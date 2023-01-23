@@ -382,7 +382,7 @@ This is relatively safe to do when using the stable branch of ~NixOS~, since the
 system.autoUpgrade = {
   enable = true;
   flake = "/etc/nixos";
-  flags = [ "--update-input" "nixpkgs" "--commit-lock-file" ];
+  flags = [ "--update-input" "nixpkgs" ];
 };
 #+end_src
 
