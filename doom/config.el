@@ -604,16 +604,22 @@ are exported to a filename derived from the headline text."
 (use-package! org-caldav
   :after org
   :config
-  (setq! org-caldav-url "http://192.168.178.74:18080/remote.php/dav/calendars/joopitz"
-         org-caldav-calendar-id "jonas-tasks"
-         org-caldav-inbox "~/gtd/tickler.org"
-         org-icalendar-timezone "Europe/Berlin"
-         org-icalendar-include-todo 'all
-         org-caldav-sync-todo t
-         org-caldav-todo-deadline-schedule-warning-days t
-         org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
-         org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo)
-         )
+  (setq!
+   org-icalendar-timezone "Europe/Berlin"
+   org-caldav-url "http://192.168.178.74:18080/remote.php/dav/calendars/joopitz"
+   org-caldav-calendar-id "jonas-tasks"
+   org-caldav-inbox '(file+headline "~/gtd/tickler.org" "Appointments")
+   ;; also include archived entries
+   org-caldav-files '("~/gtd/tickler.org" "~/gtd/tickler.org_archive")
+   ;; do not sync TODO entries
+   org-caldav-sync-todo nil
+   org-caldav-todo-deadline-schedule-warning-days nil
+   org-icalendar-include-todo nil
+   org-icalendar-use-deadline '(event-if-not-todo)
+   org-icalendar-use-scheduled '(event-if-not-todo)
+   ;; set a default reminder for exported entries
+   org-icalendar-alarm-time 30
+   )
   )
 
 (use-package org-fc
