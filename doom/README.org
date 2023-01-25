@@ -1396,8 +1396,10 @@ An icon displaying new Emails will appear in the doom modeline, if relevant.
 #+begin_src elisp
 (use-package! mu4e
   :config
-  (setq! mu4e-update-interval 300)
-)
+  (setq! mu4e-update-interval 300
+         message-send-mail-function 'message-send-mail-with-sendmail
+         )
+  )
 #+end_src
 
 ** RSS

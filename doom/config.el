@@ -705,8 +705,10 @@ are exported to a filename derived from the headline text."
 
 (use-package! mu4e
   :config
-  (setq! mu4e-update-interval 300)
-)
+  (setq! mu4e-update-interval 300
+         message-send-mail-function 'message-send-mail-with-sendmail
+         )
+  )
 
 (add-hook 'elfeed-search-mode-hook #'elfeed-update)
 
