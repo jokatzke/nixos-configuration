@@ -1,7 +1,10 @@
 #+title: A Literate River Configuration Using Python & Nix
 #+options: toc:2
-#+auto_tangle: t
+#+auto_tangle: nil
 #+STARTUP: show2levels
+
+*I had to abandon this project for now*, as ~river~ does not really run on my Nvidia card.
+I will probably get back to this once I have replaced it.
 
 This project contains my [[https://github.com/riverwm/river][river]] configuration, a dynamic tiling Wayland compositor.
 The way I am doing this configuration would probably be considered +convoluted+ unconventional,
