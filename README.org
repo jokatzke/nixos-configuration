@@ -49,20 +49,23 @@ Note that I am by no means an expert on the ~nix~ ecosystem, so the architecture
 
 * Hardware Configuration
 
-Since the hardware configuration in NixOS is generated automatically, it is not included here.
+Since the hardware configuration ([[file:hardware-configuration.nix]]) is generated automatically, it is not included here in this file.
 To generate it, run
 #+begin_src shell
 sudo nixos-generate-config
 #+end_src
-IMPORTANT: This overrides =/etc/nixos/configuration.nix=, which is the primary configuration file for NixOS!
+IMPORTANT: This overrides [[file:configuration.nix]], which is the primary configuration file for NixOS!
 Make sure to not have any edits in your current version of this file that are not present here as well.
 
 * Flake
-:PROPERTIES:
-:header-args: :results none :tangle flake.nix
-:END:
 
-[[id:38364369-088a-47f1-b807-b5566d9a7b01][Nix Flakes]] appear to be the way forward for Nix(OS), and
+[[id:38364369-088a-47f1-b807-b5566d9a7b01][Nix Flakes]] (see [[https://nixos.wiki/wiki/Flakes][the NixOS Wiki]]) appear to be the way forward for Nix(OS), as it strongly simplifies version management, especially on multiple machines.
+Essentially, you declare all your dependencies in [[file:flake.nix]], i.e. ~nixpkgs~ and ~home-manager~ for this configuration.
+When initializing ~Flakes~, a file that describes exactly which version of each dependency is being used is created (see [[file:flake.lock]]).
+To update the system, this file needs to be updated, which can be done automatically using the command ~nix flake update~.
+
+While ~Nix Flakes~ are still considered "experimental", they are widely used by this point and it seems doubtful that they will change in such a manner as to completely break.
+
 #+begin_src nix
 {
   description = "My NixOS System Configuration";
