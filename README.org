@@ -6,9 +6,14 @@
 This is my attempt to unify my entire system configuration into one place.
 Ideally, this should result in a fully set up system (modulo data) according to my preferences.
 
-Note that I am by no means an expert on the ~nix~ ecosystem, so the architecture of essentially everything is highly volatile and all configurations here are a work-in-progress.
+While this configuration is meant to be used on ~NixOS~, it is entirely possible, and quite simple, to use parts of this configuration on any ~Linux~ system.
+For example, simply moving the files contained in [[file:./doom]] to the ~Doom-Emacs~ configuration folder (=~/.doom.d= by default),
+"installs" my ~Emacs~ configuration (modulo installing ~Doom-Emacs~ and the contained packages).
 
-While almost the entirety of the source code blocks gets exported to the ~nix~ file =/etc/nixos/configuration.nix=, we can leverage the power of literate programming to write e.g. ~bash~ with all expected editing features in Emacs and then simply export them as block-comment to this file.
+Even though almost the entirety of the source code blocks gets exported to the ~nix~ files [[file:configuration.nix]] and [[file:hephaestus-home.nix]],
+we can leverage the power of literate programming to write in e.g. ~bash~ with all expected editing features in Emacs and then simply export them as block-comment to this file.
+
+Note that I am by no means an expert on the ~nix~ ecosystem, so the architecture of essentially everything is highly volatile and all configurations here are a work-in-progress.
 
 * Table of Contents :toc:
 :PROPERTIES:
