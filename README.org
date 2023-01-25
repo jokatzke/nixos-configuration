@@ -42,7 +42,7 @@ Note that I am by no means an expert on the ~nix~ ecosystem, so the architecture
   - [[#basic-information][Basic Information]]
   - [[#session-variables][Session Variables]]
   - [[#linked-directories--files][Linked Directories / Files]]
-  - [[#xdf-mime-applications][XDF MIME Applications]]
+  - [[#xdg-mime-applications][XDG MIME Applications]]
   - [[#configured-packages-dotfiles][Configured Packages (Dotfiles)]]
   - [[#unconfigured-packages][Unconfigured Packages]]
   - [[#close-home-manager-context][Close Home Manager Context]]
@@ -287,7 +287,7 @@ i18n.extraLocaleSettings = {
 services.xserver = {
   # Use the X11 Display Server
   enable = true;
-  # Enable Desktop Environment
+  # Enable Desktop Environments
   desktopManager = {
     gnome.enable = false;
     plasma5.enable = true;
@@ -387,7 +387,7 @@ This operation can take a *long* time, depending on the current size of the stor
 (took about 22 minutes on my machine, to go from around 155 GB to 115 GB).
 
 ** Automatic Updates
-Update the system every week.
+Update the system every day.
 This is relatively safe to do when using the stable branch of ~NixOS~, since there are no feature updates or breaking changes.
 #+begin_src nix
 system.autoUpgrade = {
@@ -398,8 +398,7 @@ system.autoUpgrade = {
 #+end_src
 
 ** File System
-
-Mount the =/tmp= folder as a ~tmpfs~, making it be stored RAM instead of the primary storage device.
+Mount the =/tmp= folder as a ~tmpfs~, making it be stored in RAM instead of on the primary storage device.
 This increases access speed to temporary files and makes them ephemeral, as they will be deleted when the system loses power.
 Using the ~tmpOnTmpfsSize~ option, the exact size of this temporary file system can be set.
 Options for this include absolute sizes (e.g. =12G=) or relative (e.g. =50%=)
@@ -552,13 +551,13 @@ This also requires enabling XDG Desktop Portals.
 services.flatpak.enable = true;
 xdg.portal = {
   enable = true;
-  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  extraPortals = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
 };
 #+end_src
 
 Enable docker
 #+begin_src nix
-virtualisation.docker.enable = true;
+# virtualisation.docker.enable = true;
 #+end_src
 
 #+begin_src nix
@@ -602,7 +601,7 @@ users.users.${user} = {
 In this section, we use Home Manager to configure the home user's environment.
 This mostly includes local packages and dotfiles.
 
-Open the Home Manager context
+Open the Home Manager context, setting variables for the username, the full name, and the mail directory:
 #+begin_src nix
 { config, pkgs, ... }:
 let
@@ -627,7 +626,7 @@ home.stateVersion = "22.05";
 #+end_src
 
 ** Session Variables
-Add Doom-Emacs' binaries to the path.
+Add Doom-Emacs' and custom binaries to the path.
 #+begin_src nix
 home = {
   sessionPath = [
@@ -654,8 +653,9 @@ home.file.".authinfo.gpg" = {
   source = ./.secrets/.authinfo.gpg;
 };
 #+end_src
-** XDF MIME Applications
 
+** XDG MIME Applications
+Associate applications with file types and set default applications.
 #+begin_src nix
 xdg.mimeApps = {
   enable = true;
@@ -663,7 +663,8 @@ xdg.mimeApps = {
     added = {
       "application/pdf"="okularApplication_pdf.desktop";
       "application/xhtml+xml" = "firefox.desktop";
-      "inode/directory" = "pcmanfm.desktop";
+      "application/x-compressed-tar"="org.kde.dolphin.desktop";
+      "inode/directory" = "org.kde.dolphin.desktop";
       "text/plain" = "emacsclient.desktop";
       "x-scheme-handler/mailto" = "thunderbird.desktop";
       "x-scheme-handler/mid" = "thunderbird.desktop";
@@ -672,8 +673,8 @@ xdg.mimeApps = {
   defaultApplications = {
     "application/pdf"="okularApplication_pdf.desktop";
     "application/xhtml+xml"="firefox.desktop";
-    "application/zip"="pcmanfm.desktop";
-    "inode/directory"="pcmanfm.desktop";
+    "application/zip"="org.kde.dolphin.desktop";
+    "inode/directory"="org.kde.dolphin.desktop";
     "message/rfc822"="thunderbird.desktop";
     "x-scheme-handler/discord-712465656758665259"="discord.desktop";
     "x-scheme-handler/mailto"="thunderbird.desktop";

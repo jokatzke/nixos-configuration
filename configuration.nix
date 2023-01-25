@@ -117,7 +117,7 @@ i18n.extraLocaleSettings = {
 services.xserver = {
   # Use the X11 Display Server
   enable = true;
-  # Enable Desktop Environment
+  # Enable Desktop Environments
   desktopManager = {
     gnome.enable = false;
     plasma5.enable = true;
@@ -259,10 +259,10 @@ programs.fish.enable = true;
 services.flatpak.enable = true;
 xdg.portal = {
   enable = true;
-  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  extraPortals = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
 };
 
-virtualisation.docker.enable = true;
+# virtualisation.docker.enable = true;
 
 # Some programs need SUID wrappers, can be configured further or are
 # started in user sessions.
