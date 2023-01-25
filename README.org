@@ -10,7 +10,7 @@ While this configuration is meant to be used on ~NixOS~, it is entirely possible
 For example, simply moving the files contained in [[file:./doom]] to the ~Doom-Emacs~ configuration folder (=~/.doom.d= by default),
 "installs" my ~Emacs~ configuration (modulo installing ~Doom-Emacs~ and the contained packages).
 
-Even though almost the entirety of the source code blocks gets exported to the ~nix~ files [[file:configuration.nix]] and [[file:hephaestus-home.nix]],
+Even though almost the entirety of the source code blocks gets exported to the ~nix~ files [[file:configuration.nix]] (the system-wide configuration) and [[file:hephaestus-home.nix]] (the user-configuration for my desktop PC),
 we can leverage the power of literate programming to write in e.g. ~bash~ with all expected editing features in Emacs and then simply export them as block-comment to this file.
 
 Note that I am by no means an expert on the ~nix~ ecosystem, so the architecture of essentially everything is highly volatile and all configurations here are a work-in-progress.
@@ -62,7 +62,9 @@ Make sure to not have any edits in your current version of this file that are no
 [[id:38364369-088a-47f1-b807-b5566d9a7b01][Nix Flakes]] (see [[https://nixos.wiki/wiki/Flakes][the NixOS Wiki]]) appear to be the way forward for Nix(OS), as it strongly simplifies version management, especially on multiple machines.
 Essentially, you declare all your dependencies in [[file:flake.nix]], i.e. ~nixpkgs~ and ~home-manager~ for this configuration.
 When initializing ~Flakes~, a file that describes exactly which version of each dependency is being used is created (see [[file:flake.lock]]).
-To update the system, this file needs to be updated, which can be done automatically using the command ~nix flake update~.
+To update the system, this file needs to be updated, which can be done automatically using the command ~nix flake update~, run from this folder.
+
+You may note that sub-projects, like my ~Qtile~ configuration in [[file:./qtile]], contain their own =flake.nix= file. This is used to declare a development environment for editing that configuration, i.e. ~Python~ with additional packages for formatting and checking in the case of ~Qtile~.
 
 While ~Nix Flakes~ are still considered "experimental", they are widely used by this point and it seems doubtful that they will change in such a manner as to completely break.
 
