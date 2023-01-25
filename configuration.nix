@@ -29,7 +29,7 @@ boot.loader = {
 
   # use UEFI
   systemd-boot.enable = true;
-  efi.canTouchEfiVariables = true;
+  efi.canTouchEfiVariables = false;
   efi.efiSysMountPoint = "/boot/efi";
 
   # use GRUB

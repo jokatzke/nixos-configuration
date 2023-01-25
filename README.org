@@ -23,7 +23,7 @@ Note that I am by no means an expert on the ~nix~ ecosystem, so the architecture
 - [[#flake][Flake]]
 - [[#nixos-system-configuration][NixOS System Configuration]]
   - [[#general-options][General Options]]
-  - [[#boot][Boot]]
+  - [[#bootloader--kernel][Bootloader & Kernel]]
   - [[#networking][Networking]]
   - [[#locale-settings][Locale Settings]]
   - [[#x-server-de-window-manager-login-manager-keyboard-layout][X Server (DE, Window Manager, Login Manager, Keyboard Layout)]]
@@ -112,10 +112,10 @@ While ~Nix Flakes~ are still considered "experimental", they are widely used by 
 :PROPERTIES:
 :header-args: :results none :tangle configuration.nix
 :END:
-This section relates to all system-wide configurations, e.g. installing system packages, loading fonts, modifying grub, etc.,
+This section relates to all system-wide configurations, e.g. installing system packages, loading fonts, modifying the boot-loader, etc.,
 done in the functional ~nix~ language.
 
-Opening of the configuration
+Opening of the configuration, setting the username as a variable:
 #+begin_src nix
 { config, pkgs, ... }:
 
@@ -165,15 +165,16 @@ Before changing this value read the documentation for this option
 system.stateVersion = "22.05"; # Did you read the comment?
 #+end_src
 
-** Boot
-Configure the bootloader
+** Bootloader & Kernel
+Configure the bootloader.
+If the timeout set here is not being respected within the ~UEFI~ boot menu, press [[kbd:][Shift-t]] until a message appears that says that the timeout is being determined by the configuration file.
 #+begin_src nix
 boot.loader = {
   timeout = 2;
 
   # use UEFI
   systemd-boot.enable = true;
-  efi.canTouchEfiVariables = true;
+  efi.canTouchEfiVariables = false;
   efi.efiSysMountPoint = "/boot/efi";
 
   # use GRUB
