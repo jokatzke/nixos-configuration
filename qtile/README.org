@@ -49,7 +49,6 @@ from typing import List  # noqa: F401from typing import List  # noqa: F401
 Define common applications and folders as variables.
 
 #+BEGIN_SRC python
-mod = "mod4"               # Sets mod key to SUPER/WINDOWS
 my_term = "alacritty"      # My terminal of choice
 my_browser = "firefox"     # My browser of choice
 HOME = os.path.expanduser('~')
@@ -156,23 +155,23 @@ keys = []
 #+begin_src python
 keys.extend([
     ### The essentials
-    Key([mod], "Tab",
+    Key(["mod4"], "Tab",
         lazy.next_layout(),
         desc='Toggle through layouts'
         ),
-    Key([mod], "x",
+    Key(["mod4"], "x",
         lazy.window.kill(),
         desc='Kill active window'
         ),
-    Key([mod, "shift", "control"], "r",
+    Key(["mod4", "shift", "control"], "r",
         lazy.restart(),
         desc='Restart Qtile'
         ),
-    Key([mod, "shift"], "Escape",
+    Key(["mod4", "shift"], "Escape",
         lazy.shutdown(),
         desc='Shutdown Qtile'
         ),
-    Key([mod], "Escape",
+    Key(["mod4"], "Escape",
         lazy.spawn(f"rofi -show powermenu -modi powermenu:{HOME}/.config/scripts/rofi/rofi-power-menu.sh"),
         desc="Rofi Power-Menu",
         )
@@ -190,14 +189,14 @@ for monitor, group_keys in enumerate([left_keys, right_keys]):
          [
             # move to group
                Key(
-                  [mod], key,
+                  ["mod4"], key,
                   lazy.to_screen(monitor),
                   lazy.group[key].toscreen(),
                   desc="Move to group",
                ),
             # move to group with current window
                Key(
-                  [mod, "shift"], key,
+                  ["mod4", "shift"], key,
                   lazy.window.togroup(key),
                   lazy.to_screen(monitor),
                   lazy.group[key].toscreen(),
@@ -205,7 +204,7 @@ for monitor, group_keys in enumerate([left_keys, right_keys]):
                ),
             # move only current window
                Key(
-                  [mod, "control"], key,
+                  ["mod4", "control"], key,
                   lazy.window.togroup(key),
                   desc=f"Move window to group {key}",
                ),
@@ -222,24 +221,24 @@ vim_left = "h"
 vim_right = "l"
 keys.extend(
     [
-        Key([mod], vim_down, lazy.layout.down(), desc="Move focus down"),
-        Key([mod], vim_up, lazy.layout.up(), desc="Move focus up"),
+        Key(["mod4"], vim_down, lazy.layout.down(), desc="Move focus down"),
+        Key(["mod4"], vim_up, lazy.layout.up(), desc="Move focus up"),
         Key(
-            [mod, "shift"],
+            ["mod4", "shift"],
             vim_down,
             lazy.layout.shuffle_down(),
             lazy.layout.section_down(),
             desc="Move windows down in current stack",
         ),
         Key(
-            [mod, "shift"],
+            ["mod4", "shift"],
             vim_up,
             lazy.layout.shuffle_up(),
             lazy.layout.section_up(),
             desc="Move windows up in current stack",
         ),
         Key(
-            [mod],
+            ["mod4"],
             vim_left,
             lazy.layout.grow_right(),
             lazy.layout.grow(),
@@ -248,7 +247,7 @@ keys.extend(
             desc="Resize left",
         ),
         Key(
-            [mod],
+            ["mod4"],
             vim_right,
             lazy.layout.grow_left(),
             lazy.layout.shrink(),
@@ -257,28 +256,28 @@ keys.extend(
             desc="Resize right",
         ),
         Key(
-            [mod, "shift"],
+            ["mod4", "shift"],
             "asterisk",
             lazy.layout.normalize(),
             desc="normalize window size ratios",
         ),
-        Key([mod, "shift"], "f", lazy.window.toggle_floating(), desc="toggle floating"),
-        Key([mod], "m", lazy.window.toggle_fullscreen(), desc="toggle fullscreen"),
+        Key(["mod4", "shift"], "f", lazy.window.toggle_floating(), desc="toggle floating"),
+        Key(["mod4"], "m", lazy.window.toggle_fullscreen(), desc="toggle fullscreen"),
         Key(
-            [mod, "shift"],
+            ["mod4", "shift"],
             "Tab",
             lazy.layout.rotate(),
             lazy.layout.flip(),
             desc="Switch which side main pane occupies (XmonadTall)",
         ),
         Key(
-            [mod],
+            ["mod4"],
             "space",
             lazy.layout.next(),
             desc="Switch window focus to other pane(s) of stack",
         ),
         Key(
-            [mod, "shift"],
+            ["mod4", "shift"],
             "space",
             lazy.layout.previous(),
             desc="Switch window focus to other pane(s) of stack",
@@ -292,56 +291,62 @@ keys.extend(
 #+begin_src python
 keys.extend(
     [
-        Key([], "Print",
-            lazy.spawn("spectacle -i"),
-            desc="Screenshot"),
-        Key([mod], "v",
-            lazy.spawn("pavucontrol"),
-            desc="PulseAudio-Control"),
-        Key([mod], "Return",
-            lazy.spawn(my_term),
-            desc="Terminal"),
-        Key([mod], "a",
+        Key([], "Print", lazy.spawn("spectacle -i"), desc="Screenshot"),
+        Key(["mod4"], "v", lazy.spawn("pavucontrol"), desc="PulseAudio-Control"),
+        Key(["mod4"], "Return", lazy.spawn(my_term), desc="Terminal"),
+        Key(
+            ["mod4"],
+            "a",
             lazy.spawn("emacsclient -c -a 'emacs' --eval '(org-agenda-list)'"),
-            desc="Launch Emacs"),
-        Key([mod], "b",
-            lazy.spawn(my_browser),
-            desc="Internet Browser"),
-        Key([mod], "f",
+            desc="Launch Emacs",
+        ),
+        Key(["mod4"], "b", lazy.spawn(my_browser), desc="Internet Browser"),
+        Key(
+            ["mod4"],
+            "f",
             lazy.spawn("emacsclient -c -a 'emacs' --eval '(+default/dired nil)'"),
-            desc="File-Manager"),
-        Key(["control", "shift"], "Escape",
+            desc="File-Manager",
+        ),
+        Key(
+            ["control", "shift"],
+            "Escape",
             lazy.spawn("plasma-systemmonitor"),
-            desc="System Monitor"),
-        Key([mod, "shift"], "b",
-            lazy.spawn(
-                f"{my_term} -e '{HOME}/.config/scripts/add-to-bib.fish'"
-            ),
-            desc="Bibliography Utility"),
-
+            desc="System Monitor",
+        ),
+        Key(
+            ["mod4", "shift"],
+            "b",
+            lazy.spawn(f"{my_term} -e '{HOME}/.config/scripts/add-to-bib.fish'"),
+            desc="Bibliography Utility",
+        ),
+        Key(["mod4"], "semicolon", lazy.spawn('emacsclient --eval "(emacs-everywhere)"')),
         # rofi utilities
-        Key([mod], "d",
-            lazy.spawn("rofi -show combi -show-icons"),
-            desc="d-Menu"),
-        Key([mod], "o",
+        Key(["mod4"], "d", lazy.spawn("rofi -show combi -show-icons"), desc="d-Menu"),
+        Key(
+            ["mod4"],
+            "o",
             lazy.spawn(f"fish {HOME}/.config/scripts/rofi/rofi-edit.fish"),
-            desc="Open Config Files"),
-        Key([mod, "shift"], "a",
-            lazy.spawn(
-                f"bash {HOME}/.config/scripts/rofi/rofi-add-transaction.sh"
-            ),
-            desc="Ledger Utility"),
-        Key([mod], "z",
-            lazy.spawn(
-                f"fish {HOME}/.config/scripts/rofi/rofi-gtd.fish"
-            ),
-            desc="GTD Utility"),
-
+            desc="Open Config Files",
+        ),
+        Key(
+            ["mod4", "shift"],
+            "a",
+            lazy.spawn(f"bash {HOME}/.config/scripts/rofi/rofi-add-transaction.sh"),
+            desc="Ledger Utility",
+        ),
+        Key(
+            ["mod4"],
+            "z",
+            lazy.spawn(f"fish {HOME}/.config/scripts/rofi/rofi-gtd.fish"),
+            desc="GTD Utility",
+        ),
         # cycle through autorandr profiles
-        Key([mod, "shift"], "grave",
+        Key(
+            ["mod4", "shift"],
+            "grave",
             lazy.spawn(f"fish {HOME}/.config/scripts/qtile/autorandr_cycle.fish"),
-            desc='Cycle through autorandr profiles'
-            ),
+            desc="Cycle through autorandr profiles",
+        ),
     ]
 )
 #+end_src
@@ -696,7 +701,6 @@ def init_widgets(show_systray=True):
             fontsize = 37,
         ),
         widget.Net(
-            interface = "enp3s0",
             format = '{down} ↓↑ {up}',
             foreground = colors["active_foreground"],
             background = bg_color,
@@ -813,7 +817,6 @@ def init_widgets(show_systray=True):
             foreground = colors["active_foreground"],
             background = bg_color,
             format = '{MemUsed: 3.0f}{mm} /{MemTotal: 3.0f}{mm}',
-            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(my_term + ' -e htop')},
             padding = 7
         ),
     ])
@@ -920,11 +923,11 @@ Defining some mousebindings for use with floating windows.
 
 #+BEGIN_SRC python
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(),
+    Drag(["mod4"], "Button1", lazy.window.set_position_floating(),
          start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(),
+    Drag(["mod4"], "Button3", lazy.window.set_size_floating(),
          start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front())
+    Click(["mod4"], "Button2", lazy.window.bring_to_front())
 ]
 
 dgroups_app_rules = []
