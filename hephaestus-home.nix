@@ -620,8 +620,6 @@ nixpkgs.config.allowUnfree = true;
 home.packages = [
   pkgs.libreoffice-fresh
   
-  pkgs.pcmanfm
-  
   pkgs.thunderbird
   pkgs.mattermost-desktop
   pkgs.element-desktop

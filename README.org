@@ -279,7 +279,7 @@ services.xserver = {
   # Enable Desktop Environment
   desktopManager = {
     gnome.enable = false;
-    plasma5.enable = false;
+    plasma5.enable = true;
   };
   # Enable Window Managers
   windowManager = {
@@ -1459,8 +1459,6 @@ home.packages = [
 **** Office, Mail, Messengers
 #+begin_src nix
 pkgs.libreoffice-fresh
-
-pkgs.pcmanfm
 
 pkgs.thunderbird
 pkgs.mattermost-desktop

@@ -120,7 +120,7 @@ services.xserver = {
   # Enable Desktop Environment
   desktopManager = {
     gnome.enable = false;
-    plasma5.enable = false;
+    plasma5.enable = true;
   };
   # Enable Window Managers
   windowManager = {
