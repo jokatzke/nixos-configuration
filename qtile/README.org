@@ -982,7 +982,7 @@ def autostart():
                 ["element-desktop"],
                 ["discord"],
                 ["emacs", "--daemon"],
-                ["steam-run" f"{HOME}/Downloads/activitywatch/aw-qt"],
+                ["steam-run", f"{HOME}/Downloads/activitywatch/aw-qt"],
             ]
         )
 
@@ -990,3 +990,5 @@ def autostart():
         for application in applications:
             subprocess.Popen(application)
 #+END_SRC
+
+#+RESULTS:

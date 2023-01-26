@@ -770,7 +770,7 @@ def autostart():
                 ["element-desktop"],
                 ["discord"],
                 ["emacs", "--daemon"],
-                ["steam-run" f"{HOME}/Downloads/activitywatch/aw-qt"],
+                ["steam-run", f"{HOME}/Downloads/activitywatch/aw-qt"],
             ]
         )
 
