@@ -30,7 +30,19 @@
   (global-activity-watch-mode)
   )
 
-(setq! frame-title-format '(:eval (concat (projectile-project-p) "%b - Doom Emacs")))
+(setq! projectile-globally-ignored-buffers
+       '("\*mu4e.*\*"
+         "\*Article\*"
+         "\*elfeed.*\*"
+         ))
+
+(setq! frame-title-format
+       '(:eval
+         (concat
+          (if (projectile-ignored-buffer-p (current-buffer))
+              nil (projectile-project-p))
+          "%b - Doom Emacs")
+         ))
 
 (setq! doom-font                (font-spec :family "FiraCode Nerd Font" :size 15)
        doom-variable-pitch-font (font-spec :family "Open Sans"           :size 16))

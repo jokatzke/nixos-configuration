@@ -377,10 +377,25 @@ Load [[id:a75f5389-12c9-40a8-ae3e-d02ad0430e4d][activity-watch-mode]] on startup
   )
 #+end_src
 
+Ignore certain special buffers from being excluded in projects.
+#+begin_src elisp
+(setq! projectile-globally-ignored-buffers
+       '("\*mu4e.*\*"
+         "\*Article\*"
+         "\*elfeed.*\*"
+         ))
+#+end_src
+
 In addition to the buffer name, also show the project when in a project.
 This is primarily useful for [[id:436138a8-5f18-4f66-b8aa-a06c6044a4fa][ActivityWatch]], as it uses the window title of applications for automatic classification.
 #+begin_src elisp
-(setq! frame-title-format '(:eval (concat (projectile-project-p) "%b - Doom Emacs")))
+(setq! frame-title-format
+       '(:eval
+         (concat
+          (if (projectile-ignored-buffer-p (current-buffer))
+              nil (projectile-project-p))
+          "%b - Doom Emacs")
+         ))
 #+end_src
 
 ** Theme
