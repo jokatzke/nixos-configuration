@@ -368,6 +368,21 @@ Disable =whitespace-mode= globally
 (global-whitespace-mode -1)
 #+end_src
 
+Load [[id:a75f5389-12c9-40a8-ae3e-d02ad0430e4d][activity-watch-mode]] on startup and activate [[fn:global-activity-watch-mode]].
+#+begin_src elisp
+(use-package! activity-watch-mode
+  :defer nil
+  :init
+  (global-activity-watch-mode)
+  )
+#+end_src
+
+In addition to the buffer name, also show the project when in a project.
+This is primarily useful for [[id:436138a8-5f18-4f66-b8aa-a06c6044a4fa][ActivityWatch]], as it uses the window title of applications for automatic classification.
+#+begin_src elisp
+(setq! frame-title-format '(:eval (concat (projectile-project-p) "%b - Doom Emacs")))
+#+end_src
+
 ** Theme
 
 Doom exposes five (optional) variables for controlling fonts in Doom.
@@ -1500,6 +1515,10 @@ Use [[id:41d896e4-12f0-46e0-9f19-96373229f371][org-roam-ui]] and unpin [[id:795e
 
 #+begin_src elisp
 (package! emacsql-sqlite3)
+#+end_src
+
+#+begin_src elisp
+(package! activity-watch-mode)
 #+end_src
 
 ** Notes

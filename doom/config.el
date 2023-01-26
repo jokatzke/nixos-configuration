@@ -24,6 +24,14 @@
 
 (global-whitespace-mode -1)
 
+(use-package! activity-watch-mode
+  :defer nil
+  :init
+  (global-activity-watch-mode)
+  )
+
+(setq! frame-title-format '(:eval (concat (projectile-project-p) "%b - Doom Emacs")))
+
 (setq! doom-font                (font-spec :family "FiraCode Nerd Font" :size 15)
        doom-variable-pitch-font (font-spec :family "Open Sans"           :size 16))
 

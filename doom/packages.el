@@ -33,3 +33,5 @@
 (package! vertico-prescient)
 
 (package! emacsql-sqlite3)
+
+(package! activity-watch-mode)
